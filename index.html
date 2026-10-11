@@ -603,7 +603,7 @@
     <div class="lbl" style="margin:0 0 6px">SCHWIERIGKEIT</div>
     <div class="seg" id="gSw" style="margin-bottom:10px"><button data-v="EASY">Leicht</button><button data-v="MEDIUM" class="on">Mittel</button><button data-v="HARD">Schwer</button></div>
     <div class="lbl" style="margin:0 0 6px">SCHWUNGSYSTEM</div>
-    <div class="seg" id="gCtl" style="margin-bottom:12px"><button data-v="classic" class="on">3 Klicks</button><button data-v="line">Klick &amp; Hope ★</button><button data-v="instant">Point &amp; Click</button></div>
+    <div class="seg" id="gCtl" style="margin-bottom:12px"><button data-v="classic" class="on">3 Klicks</button><button data-v="line">Aim &amp; Hope ★</button><button data-v="instant">Point &amp; Click</button></div>
     <button class="btn big" id="btnGolfRound">RUNDE STARTEN · 9 LÖCHER</button>
     <div class="lbl" style="margin:14px 0 6px">EINZELNES LOCH ÜBEN</div>
     <div id="golfHoles" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px"></div>
@@ -691,7 +691,7 @@
       <div id="mpHost">
         <div class="opts">
           <div><div class="lbl" data-i18n="setup.map"></div><div class="seg" id="mpMap"><button data-v="park" class="on" data-i18n="map.park"></button><button data-v="paradise" data-i18n="map.paradise"></button><button data-v="desert" data-i18n="map.desert"></button><button data-v="range" data-i18n="map.range"></button></div></div>
-          <div><div class="lbl">Modus / Mode</div><div class="seg" id="mpMode"><button data-v="battle" class="on">Battle Golf</button><button data-v="koth">King of the Hill</button></div></div>
+          <div><div class="lbl">Modus / Mode</div><div class="seg" id="mpMode"><button data-v="battle" class="on">Battle Golf</button><button data-v="koth">King of the Hill</button><button data-v="golf">Golfplatz</button></div></div>
           <div><div class="lbl" data-i18n="setup.opp"></div><div class="seg" id="mpSkill"><button data-v="EASY">Easy</button><button data-v="MEDIUM" class="on">Medium</button><button data-v="HARD">Hard</button></div></div>
         </div>
         <button class="btn" id="btnMpStart" data-i18n="mp.start"></button>
@@ -1146,7 +1146,7 @@
       'tut.title': 'SO FUNKTIONIERT BATTLE GOLF', 'tut.next': 'WEITER', 'tut.prev': 'ZURÜCK', 'tut.close': 'SCHLIESSEN',
       'common.back': 'ZURÜCK', 'common.done': 'FERTIG',
       'opt.title': 'OPTIONEN', 'opt.gfx': 'Grafik (Schatten & Farben)', 'gfx.0': 'Niedrig', 'gfx.1': 'Mittel', 'gfx.2': 'Hoch', 'opt.volume': 'Lautstärke', 'opt.amb': 'Hintergrundgeräusche (Wind, Vögel, Brandung)', 'opt.bright': 'Helligkeit', 'opt.contrast': 'Kontrast', 'opt.lang': 'Sprache', 'opt.bg': 'Menü-Hintergrund (mit passenden Geräuschen)', 'opt.bg.random': 'ZUFALL', 'opt.bg.koth': 'KOTH',
-      'setup.title': 'RUNDE STARTEN', 'setup.map': 'Karte', 'map.park': 'PARK', 'map.parkd': 'Klassischer Platz mit Hügeln, Seen, Bunkern und Bäumen.', 'map.paradise': 'PARADIES', 'map.paradised': 'Tropeninsel mit Palmen, Lagunen und Strand.', 'map.desert': 'WÜSTE', 'map.desertd': 'Trockene Dünenlandschaft mit Kakteen, Felsen und einer Oase.', 'map.range': 'LUXUS-RANGE', 'map.ranged': 'Moderne Range mit Ziel-Greens. Jedes Team hat eine eigene zweistöckige Bay.', 'setup.opp': 'Gegner-Stärke', 'setup.players': 'Spieler pro Team', 'setup.ctl': 'Steuerung', 'setup.ctl.classic': '3 Klicks', 'setup.ctl.line': 'Klick & Hope ★', 'setup.ctl.instant': 'Point & Click', 'setup.swing': 'Dein Schwung', 'setup.sw.easy': 'Leicht', 'setup.sw.med': 'Mittel', 'setup.sw.hard': 'Schwer', 'sw.hint.EASY': 'Jeden Skillcheck beliebig oft wiederholen · Schläger automatisch · Point & Click möglich', 'sw.hint.MEDIUM': 'Pro Schlag einen Skillcheck wiederholen (RECHTSKLICK) · Schläger selbst wählen', 'sw.hint.HARD': 'Kein Wiederholen · Schläger selbst wählen', 'seq.line': 'POWER – LEERTASTE, WENN DU DIE NÖTIGE POWER TRIFFST!', 'seq.linestart': 'A/D ZIELEN · Q/E DRAW-FADE · SHIFT/CAPS SPIN · LEERTASTE = POWER-SKILLCHECK', 'setup.timing': 'Schlagart', 'setup.on': '3 Klicks', 'setup.off': 'Sofort', 'seq.start': 'LEERTASTE · SKILLCHECK STARTEN', 'seq.1': '1 · DISTANZ – LEERTASTE!', 'seq.2': '2 · KURVE (DRAW ← → FADE) – LEERTASTE!', 'seq.3': '3 · SPIN (BACK ← → TOP) – LEERTASTE!', 'setup.start': 'RUNDE STARTEN', 'setup.clubs': 'Leicht: Der Schläger wird automatisch gewählt. Mittel und Schwer: Du wählst ihn selbst (Tasten 1–4).',
+      'setup.title': 'RUNDE STARTEN', 'setup.map': 'Karte', 'map.park': 'PARK', 'map.parkd': 'Klassischer Platz mit Hügeln, Seen, Bunkern und Bäumen.', 'map.paradise': 'PARADIES', 'map.paradised': 'Tropeninsel mit Palmen, Lagunen und Strand.', 'map.desert': 'WÜSTE', 'map.desertd': 'Trockene Dünenlandschaft mit Kakteen, Felsen und einer Oase.', 'map.range': 'LUXUS-RANGE', 'map.ranged': 'Moderne Range mit Ziel-Greens. Jedes Team hat eine eigene zweistöckige Bay.', 'setup.opp': 'Gegner-Stärke', 'setup.players': 'Spieler pro Team', 'setup.ctl': 'Steuerung', 'setup.ctl.classic': '3 Klicks', 'setup.ctl.line': 'Aim & Hope ★', 'setup.ctl.instant': 'Point & Click', 'setup.swing': 'Dein Schwung', 'setup.sw.easy': 'Leicht', 'setup.sw.med': 'Mittel', 'setup.sw.hard': 'Schwer', 'sw.hint.EASY': 'Jeden Skillcheck beliebig oft wiederholen · Schläger automatisch · Point & Click möglich', 'sw.hint.MEDIUM': 'Pro Schlag einen Skillcheck wiederholen (RECHTSKLICK) · Schläger selbst wählen', 'sw.hint.HARD': 'Kein Wiederholen · Schläger selbst wählen', 'seq.line': 'POWER – LEERTASTE, WENN DU DIE NÖTIGE POWER TRIFFST!', 'seq.linestart': 'A/D ZIELEN · Q/E DRAW-FADE · SHIFT/CAPS SPIN · LEERTASTE = POWER-SKILLCHECK', 'setup.timing': 'Schlagart', 'setup.on': '3 Klicks', 'setup.off': 'Sofort', 'seq.start': 'LEERTASTE · SKILLCHECK STARTEN', 'seq.1': '1 · DISTANZ – LEERTASTE!', 'seq.2': '2 · KURVE (DRAW ← → FADE) – LEERTASTE!', 'seq.3': '3 · SPIN (BACK ← → TOP) – LEERTASTE!', 'setup.start': 'RUNDE STARTEN', 'setup.clubs': 'Leicht: Der Schläger wird automatisch gewählt. Mittel und Schwer: Du wählst ihn selbst (Tasten 1–4).',
       'setup.keys': 'A/D Richtung · 1–4 Schläger · LEERTASTE/Klick = 3-Stufen-Skillcheck (Distanz, Kurve, Spin; Rechtsklick/X bricht ab) · Maus ziehen = Kamera leicht schwenken · V = freie Kamera von oben (Ziehen, Rechtsdrag, Rad Zoom) und zurück',
       'cust.title': 'DEINE FIGUR', 'cust.hair': 'Frisur', 'cust.hat': 'Kopfbedeckung', 'cust.top': 'Oberteil', 'cust.bottom': 'Hose / Rock',
       'cust.skinC': 'Hautfarbe', 'cust.hairC': 'Haarfarbe', 'cust.hatC': 'Mützenfarbe', 'cust.partsC': 'Einzelteile – jede Farbe einzeln', 'cust.topC': 'Farbe Oberteil', 'cust.bottomC': 'Farbe Hose', 'cust.shoesC': 'Schuhe', 'cust.random': 'ZUFÄLLIG', 'cust.reset': 'STANDARD',
@@ -1166,7 +1166,7 @@
       'tut.title': 'HOW BATTLE GOLF WORKS', 'tut.next': 'NEXT', 'tut.prev': 'BACK', 'tut.close': 'CLOSE',
       'common.back': 'BACK', 'common.done': 'DONE',
       'opt.title': 'OPTIONS', 'opt.gfx': 'Graphics (shadows & colors)', 'gfx.0': 'Low', 'gfx.1': 'Medium', 'gfx.2': 'High', 'opt.volume': 'Volume', 'opt.amb': 'Background sounds (wind, birds, surf)', 'opt.bright': 'Brightness', 'opt.contrast': 'Contrast', 'opt.lang': 'Language', 'opt.bg': 'Menu background (with matching sounds)', 'opt.bg.random': 'RANDOM', 'opt.bg.koth': 'KOTH',
-      'setup.title': 'START ROUND', 'setup.map': 'Map', 'map.park': 'PARK', 'map.parkd': 'Classic course with hills, lakes, bunkers and trees.', 'map.paradise': 'PARADISE', 'map.paradised': 'Tropical island with palms, lagoons and beach.', 'map.desert': 'DESERT', 'map.desertd': 'Dry dune landscape with cacti, rocks and an oasis.', 'map.range': 'LUXURY RANGE', 'map.ranged': 'Modern range with target greens. Every team gets its own two-story bay.', 'setup.opp': 'Opponent strength', 'setup.players': 'Players per team', 'setup.ctl': 'Controls', 'setup.ctl.classic': '3 clicks', 'setup.ctl.line': 'Click & Hope ★', 'setup.ctl.instant': 'Point & click', 'setup.swing': 'Your swing', 'setup.sw.easy': 'Easy', 'setup.sw.med': 'Medium', 'setup.sw.hard': 'Hard', 'sw.hint.EASY': 'Retry every skill check as often as you like · club picked for you · point & click available', 'sw.hint.MEDIUM': 'Retry one skill check per shot (RIGHT CLICK) · pick your own club', 'sw.hint.HARD': 'No retries · pick your own club', 'seq.line': 'POWER – SPACE WHEN YOU HIT THE POWER YOU NEED!', 'seq.linestart': 'A/D AIM · Q/E DRAW-FADE · SHIFT/CAPS SPIN · SPACE = POWER SKILL CHECK', 'setup.timing': 'Swing type', 'setup.on': '3 clicks', 'setup.off': 'Instant', 'seq.start': 'SPACE · START SKILL CHECK', 'seq.1': '1 · DISTANCE – SPACE!', 'seq.2': '2 · CURVE (DRAW ← → FADE) – SPACE!', 'seq.3': '3 · SPIN (BACK ← → TOP) – SPACE!', 'setup.start': 'START ROUND', 'setup.clubs': 'Easy: the club is picked for you. Medium and Hard: you choose it yourself (keys 1–4).',
+      'setup.title': 'START ROUND', 'setup.map': 'Map', 'map.park': 'PARK', 'map.parkd': 'Classic course with hills, lakes, bunkers and trees.', 'map.paradise': 'PARADISE', 'map.paradised': 'Tropical island with palms, lagoons and beach.', 'map.desert': 'DESERT', 'map.desertd': 'Dry dune landscape with cacti, rocks and an oasis.', 'map.range': 'LUXURY RANGE', 'map.ranged': 'Modern range with target greens. Every team gets its own two-story bay.', 'setup.opp': 'Opponent strength', 'setup.players': 'Players per team', 'setup.ctl': 'Controls', 'setup.ctl.classic': '3 clicks', 'setup.ctl.line': 'Aim & Hope ★', 'setup.ctl.instant': 'Point & click', 'setup.swing': 'Your swing', 'setup.sw.easy': 'Easy', 'setup.sw.med': 'Medium', 'setup.sw.hard': 'Hard', 'sw.hint.EASY': 'Retry every skill check as often as you like · club picked for you · point & click available', 'sw.hint.MEDIUM': 'Retry one skill check per shot (RIGHT CLICK) · pick your own club', 'sw.hint.HARD': 'No retries · pick your own club', 'seq.line': 'POWER – SPACE WHEN YOU HIT THE POWER YOU NEED!', 'seq.linestart': 'A/D AIM · Q/E DRAW-FADE · SHIFT/CAPS SPIN · SPACE = POWER SKILL CHECK', 'setup.timing': 'Swing type', 'setup.on': '3 clicks', 'setup.off': 'Instant', 'seq.start': 'SPACE · START SKILL CHECK', 'seq.1': '1 · DISTANCE – SPACE!', 'seq.2': '2 · CURVE (DRAW ← → FADE) – SPACE!', 'seq.3': '3 · SPIN (BACK ← → TOP) – SPACE!', 'setup.start': 'START ROUND', 'setup.clubs': 'Easy: the club is picked for you. Medium and Hard: you choose it yourself (keys 1–4).',
       'setup.keys': 'A/D direction · 1–4 club · SPACE/click = 3-step skill check (distance, curve, spin; right-click/X cancels) · drag = nudge camera left/right · V = free camera from above (drag, R-drag pan, wheel zoom) and back',
       'cust.title': 'YOUR PLAYER', 'cust.hair': 'Hairstyle', 'cust.hat': 'Headwear', 'cust.top': 'Top', 'cust.bottom': 'Bottoms',
       'cust.skinC': 'Skin tone', 'cust.hairC': 'Hair color', 'cust.hatC': 'Hat color', 'cust.partsC': 'Single parts – every color on its own', 'cust.topC': 'Top color', 'cust.bottomC': 'Bottoms color', 'cust.shoesC': 'Shoes', 'cust.random': 'RANDOM', 'cust.reset': 'DEFAULT',
@@ -5205,7 +5205,7 @@
   }
 
   /** Putter: gibt es nur auf dem Platz (nicht in C.clubs, damit Bots/Menü unverändert bleiben); Reichweite wird je Lage berechnet */
-  const putter = { key: 'PT', name: 'PUTTER', speed: 11.5, loft: 1, power: 20, accuracy: 99, spin: 0, range: 40 };
+  const putter = { key: 'PT', name: 'PUTTER', speed: 17.5, loft: 1, power: 20, accuracy: 99, spin: 0, range: 43 };
   function putterRange(p) {
     try { const r = BG.Physics.simulate({ x: p.x, z: p.z, y: T.height(p.x, p.z) + C.physics.ballR }, { club: putter, power: 1, yaw: p.yaw || 0, spinSet: 0, sideSet: 0, ball: 'standard' }, { wind: { x: 0, z: 0 } }, { full: true }); putter.range = Math.max(8, Math.hypot(r.rest.x - p.x, r.rest.z - p.z)); } catch (e) { /* bleibt */ }
     return putter.range;
@@ -9477,6 +9477,7 @@
     },
     tick(game, Ctl, dt) {
       this.update(performance.now() / 1000);
+      this.mpTick(game);
       const el = this.hud(false); if (!el) return;
       const gf = game.golf, co = T.course;
       if (!gf || !co || game.state === 'menu' || game.state === 'ended') { el.style.display = 'none'; return; }
@@ -9484,6 +9485,36 @@
       const key = [gf.hole, gf.strokes, d, gf.phase, de].join('|'); if (key === this._k) return; this._k = key;
       el.style.display = 'flex';
       el.innerHTML = '<span>' + (de ? 'LOCH ' : 'HOLE ') + gf.hole + '</span><span style="opacity:.8">PAR ' + gf.par + '</span><span>' + (de ? 'SCHLÄGE ' : 'STROKES ') + '<b style="color:#ffe28a">' + gf.strokes + '</b></span><span>' + d + ' m</span>';
+    },
+    /** Mehrspieler-Golf: Stand aller Spieler (eigene Werte direkt aus dem Spiel, die anderen aus der Presence) */
+    mpRows(game) {
+      const N = BG.Net, gf = game.golf; if (!N || !N.golfMode || !N.nr || !gf) return null;
+      const peers = N.nr.peers(), par = (h) => (BG.GcData[h] && BG.GcData[h].par) || 4, rows = [];
+      for (const pl of N.golfPlayers || []) {
+        const pe = peers.find(x => x.peer === pl.p), me = !!(pe && pe.isMe);
+        const gp = me ? { h: gf.hole, s: gf.strokes, sc: gf.scores, d: gf.phase === 'holed' && gf.hole >= 9 ? 1 : 0 } : (pe && pe.presence && pe.presence.gp);
+        const css = BG.CONFIG.teams[pl.tm] ? BG.CONFIG.teams[pl.tm].css : '#fff';
+        if (!gp || !Array.isArray(gp.sc)) { rows.push({ name: pl.n, css, me, hole: 1, T: 0, diff: 0, done: false, gone: !pe }); continue; }
+        let T = 0, pr = 0; for (let i = 0; i < 9; i++) if (gp.sc[i] != null) { T += gp.sc[i]; pr += par(i + 1); }
+        if (gp.sc[gp.h - 1] == null && gp.s > 0) { T += gp.s; pr += par(gp.h); }
+        rows.push({ name: pl.n, css, me, hole: Math.min(9, gp.h || 1), T, diff: T - pr, done: gp.d === 1, gone: !pe });
+      }
+      return rows.sort((a, b) => (b.done - a.done && a.done !== b.done ? 0 : 0) || a.diff - b.diff || a.T - b.T);
+    },
+    mpHtml(rows, de) {
+      const fmt = (d) => d === 0 ? 'E' : (d > 0 ? '+' : '') + d;
+      return rows.map((r, i) => '<div style="display:flex;gap:8px;align-items:center;padding:2px 0;' + (r.me ? 'color:#ffe28a;' : '') + (r.gone ? 'opacity:.4;' : '') + '"><span style="width:14px;opacity:.7">' + (i + 1) + '</span><i style="width:9px;height:9px;border-radius:50%;background:' + r.css + '"></i><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + String(r.name).replace(/[<>&]/g, '') + '</span><span style="opacity:.7">' + (r.done ? (de ? 'FERTIG' : 'DONE') : 'L' + r.hole) + '</span><b style="min-width:62px;text-align:right">' + r.T + ' (' + fmt(r.diff) + ')</b></div>').join('');
+    },
+    mpTick(game) {
+      const rows = this.mpRows(game); let el = document.getElementById('golfMp');
+      if (!rows || game.state === 'menu') { if (el) el.remove(); return; }
+      const N = BG.Net, gf = game.golf, key = [gf.hole, gf.strokes, gf.phase].join('|');
+      if (key !== this._mpk) { this._mpk = key; N.setPresence({ gp: { h: gf.hole, s: gf.strokes, sc: gf.scores.slice(), d: gf.phase === 'holed' && gf.hole >= 9 ? 1 : 0 } }); }
+      const now = performance.now(); if (this._mpt && now - this._mpt < 500) return; this._mpt = now;
+      const de = this.de(), html = this.mpHtml(rows, de);
+      if (!el) { el = document.createElement('div'); el.id = 'golfMp'; el.style.cssText = 'position:fixed;left:calc(10px + env(safe-area-inset-left,0px));top:calc(64px + env(safe-area-inset-top,0px));z-index:30;min-width:190px;max-width:260px;padding:8px 12px;border-radius:12px;background:rgba(8,16,12,.72);backdrop-filter:blur(6px);color:#fff;font:700 13px/1.3 var(--display,system-ui);pointer-events:none'; document.body.appendChild(el); }
+      el.innerHTML = html;
+      const rk = document.getElementById('golfMpRank'); if (rk) rk.innerHTML = html;
     },
     onHoleout(e, game, act, Au) {
       const de = this.de(), co = T.course, sc = e.scores, done = sc.filter(v => v != null), tot = done.reduce((a, b) => a + b, 0);
@@ -9499,12 +9530,12 @@
         '<div style="font:900 clamp(34px,7vw,56px)/1 var(--display,system-ui);letter-spacing:.04em;color:' + (e.diff < 0 ? '#ffe28a' : e.diff === 0 ? '#9dffb8' : '#ffb3a8') + ';margin:8px 0 4px">' + name + '</div>' +
         '<div style="font-size:18px;margin-bottom:12px">' + e.strokes + (de ? ' Schläge' : ' strokes') + '</div>' +
         '<table style="margin:0 auto 14px;border-collapse:collapse;font-size:16px"><tr>' + rows + '<td style="padding:2px 10px;border-left:1px solid #fff3;text-align:center"><div style="opacity:.6;font-size:11px">' + (de ? 'GESAMT' : 'TOTAL') + '</div><b>' + tot + ' (' + fmt(diff) + ')</b></td></tr></table>' +
-        '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap" id="golfBtns"></div></div>';
+        (BG.Net && BG.Net.golfMode ? '<div id="golfMpRank" style="text-align:left;margin:0 auto 14px;font-size:15px;min-width:240px"></div>' : '') + '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap" id="golfBtns"></div></div>';
       document.body.appendChild(ov);
       const btn = (txt, fn, main) => { const b = document.createElement('button'); b.textContent = txt; b.style.cssText = 'font:800 15px var(--display,system-ui);letter-spacing:.1em;padding:12px 20px;border-radius:12px;border:1.5px solid rgba(255,255,255,.3);cursor:pointer;color:' + (main ? '#08121a' : '#fff') + ';background:' + (main ? '#ffc43d' : 'rgba(255,255,255,.08)'); b.onclick = () => { ov.remove(); this.ov = null; fn(); }; ov.querySelector('#golfBtns').appendChild(b); };
       if (!e.last && e.round) btn((de ? 'WEITER · LOCH ' : 'NEXT · HOLE ') + (e.hole + 1), () => act.next(sc), true);
       else if (e.last && e.round) btn(de ? 'RUNDE BEENDET' : 'ROUND DONE', act.menu, true);
-      btn(de ? 'NOCHMAL' : 'RETRY', act.again);
+      if (act.again) btn(de ? 'NOCHMAL' : 'RETRY', act.again);
       if (!e.round || !e.last) btn(de ? 'MENÜ' : 'MENU', act.menu);
     }
   };
@@ -10751,6 +10782,34 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       this.poser = BG.Avatar.poser(this.av, { start: 0 });         // Fotoshooting: wechselt nacheinander Golfposen (Blitz bei jeder neuen Pose)
     },
 
+    /** Mehrspieler-Lobby: alle Spieler stehen nebeneinander (list: [{look, name, css, me}]); leere Liste = normales Menü */
+    setLobby(list) {
+      if (!this.ok) return;
+      (this.lobbyAvs || []).forEach((o) => { this.scene.remove(o.root); });
+      this.lobbyAvs = []; this.lobbyN = list ? list.length : 0;
+      const multi = list && list.length > 1;
+      if (this.bag) this.bag.visible = !multi; if (this.bin) this.bin.visible = !multi;
+      if (!multi) { this.playerRoot.position.x = 0; if (this.nameTag) { this.playerRoot.remove(this.nameTag); this.nameTag = null; } this.setMode(this.mode); return; }
+      const n = list.length, gap = 2.5, x0 = n > 2 ? 2.8 : 2.0;
+      list.forEach((p, i) => {
+        const x = x0 + (i - (n - 1) / 2) * gap, tag = this.makeTag(p.name, p.css);
+        if (p.me) { this.playerRoot.position.x = x; if (this.nameTag) this.playerRoot.remove(this.nameTag); this.nameTag = tag; this.playerRoot.add(tag); tag.position.set(0, 4.1, 0); return; }
+        const root = new THREE.Group(); root.position.set(x, 0.08, 0.3 * (i % 2)); root.rotation.y = Math.PI - 0.3 + (x0 - x) * 0.05;
+        let av = null; try { av = BG.Avatar.build(p.look || BG.Prefs.data.look, null); root.add(av.group); } catch (e) { console.error('lobby avatar', e); }
+        root.add(tag); tag.position.set(0, 4.1, 0);
+        this.scene.add(root); this.lobbyAvs.push({ root, av, ph: i * 1.3 });
+      });
+      this.setMode(this.mode);
+    },
+    makeTag(name, css) {
+      const c = document.createElement('canvas'); c.width = 384; c.height = 96; const g = c.getContext('2d');
+      g.fillStyle = 'rgba(8,16,12,.78)'; g.beginPath(); g.roundRect ? g.roundRect(6, 10, 372, 76, 22) : g.rect(6, 10, 372, 76); g.fill();
+      g.fillStyle = css || '#fff'; g.beginPath(); g.arc(44, 48, 14, 0, 7); g.fill();
+      g.fillStyle = '#fff'; g.font = '800 40px system-ui,sans-serif'; g.textBaseline = 'middle'; g.fillText(String(name || '?').slice(0, 12), 70, 50);
+      const t = new THREE.CanvasTexture(c), sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, depthTest: false, transparent: true }));
+      sp.scale.set(2.3, 0.575, 1); sp.renderOrder = 10; return sp;
+    },
+
     /** Schläger-Design auf Golfbag und Figur anwenden */
     applySkin() {
       const sk = BG.Shop && BG.Shop.equipped(), M = this.bagMats; if (!sk || !M) return;
@@ -10967,6 +11026,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       this.mode = mode;
       if (mode === 'custom') { this.tPos.set(0.0, 3.2, 8.4); this.tLook.set(0.0, 2.1, 0); this.tOff = 0.2; }
       else if (mode === 'shop') { this.tPos.set(2.2, 3.2, 8.2); this.tLook.set(1.9, 2.1, 0); this.tOff = 0.2; }
+      else if (mode === 'multi' && (this.lobbyN || 0) > 2) { this.tPos.set(2.8, 3.9, 17.5); this.tLook.set(2.8, 2.2, 0); this.tOff = 0.2; }
       else if (mode === 'setup' || mode === 'options' || mode === 'multi') { this.tPos.set(0.5, 3.8, 13.8); this.tLook.set(0.2, 2.2, 0); this.tOff = 0.2; }
       else { this.tPos.set(0.5, 3.8, 13); this.tLook.set(0.2, 2.2, 0); this.tOff = 0.14; }
       if (snap) { this.camPos.copy(this.tPos); this.camLook.copy(this.tLook); this.vOff = this.tOff; }
@@ -11050,6 +11110,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
         this.av.head.rotation.x = hb[1] + Math.sin(this.t * 0.9) * 0.03;
         this.av.group.position.y = Math.sin(this.t * 1.6) * 0.012;
       }
+      (this.lobbyAvs || []).forEach((o) => { o.root.position.y = 0.08 + Math.sin(this.t * 1.6 + o.ph) * 0.012; if (o.av && o.av.head) { const hb = o.av.headBase || [0, 0]; o.av.head.rotation.y = hb[0] + Math.sin(this.t * 0.7 + o.ph) * 0.1; o.av.head.rotation.x = hb[1] + Math.sin(this.t * 0.9 + o.ph) * 0.03; } });
       if (this.bag) this.bag.rotation.y = -0.5 + Math.sin(this.t * 0.4) * 0.02;
     },
 
@@ -11102,7 +11163,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       // Klick auf einen Schläger wählt ihn (PC); im Golf-Modus kommt eine PUTTER-Zeile dazu
       this.clubEls.forEach((el, i) => { el.style.cursor = 'pointer'; el.style.pointerEvents = 'auto'; el.addEventListener('mousedown', (e) => { e.preventDefault(); e.stopPropagation(); if (BG.PlayerCtl && BG.PlayerCtl.p) BG.PlayerCtl.setClub(i); }); });
       { const el = document.createElement('div'); el.className = 'c'; el.hidden = true; el.style.cursor = 'pointer'; el.style.pointerEvents = 'auto';
-        el.innerHTML = '<b>5</b><span>PUTTER</span><em class="num" style="font-style:normal;font-size:11px">' + Math.round((BG.Gc && BG.Gc.putter && BG.Gc.putter.range) || 40) + '</em>';
+        el.innerHTML = '<b>5</b><span>PUTTER</span><em class="num" style="font-style:normal;font-size:11px">' + Math.round((BG.Gc && BG.Gc.putter && BG.Gc.putter.range) || 43) + '</em>';
         el.addEventListener('mousedown', (e) => { e.preventDefault(); e.stopPropagation(); if (BG.PlayerCtl && BG.PlayerCtl.p) BG.PlayerCtl.setPutter(); });
         this.clubList.appendChild(el); this.putterEl = el; }
 
@@ -12265,7 +12326,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       if (!this.isHost || !this.nr) return null;
       const lob = this.lobby(), as = this.assign(lob);
       const hs = lob.filter(p => as[p.peer] >= 0).map(p => ({ p: p.peer, tm: as[p.peer], n: p.name, lk: p.look }));
-      const pkt = { id: Math.random().toString(36).slice(2, 8), seed: (Math.random() * 4294967296) >>> 0, map: settings.map, skill: settings.skill, mode: settings.mode === 'koth' ? 'koth' : undefined, hs };
+      const pkt = { id: Math.random().toString(36).slice(2, 8), seed: (Math.random() * 4294967296) >>> 0, map: settings.map, skill: settings.skill, mode: settings.mode === 'koth' ? 'koth' : settings.mode === 'golf' ? 'golf' : undefined, hs };
       this.goSeen = pkt.id;
       this.setPresence({ go: pkt, ig: 1 });
       return pkt;
@@ -12319,7 +12380,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
     leave() {
       try { if (this.unsub) this.unsub(); } catch (e) { /* egal */ }
       try { if (this.nr) this.nr.leave(); } catch (e) { /* egal */ }
-      this.unsub = null; this.nr = null; this.active = false; this.ingame = false; this.sync = null; this.game = null; this.owners = {}; this.hostPeer = '';
+      this.unsub = null; this.nr = null; this.active = false; this.ingame = false; this.golfMode = false; this.golfPlayers = null; this.sync = null; this.game = null; this.owners = {}; this.hostPeer = '';
     }
   };
 
@@ -12328,7 +12389,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
 
 /* src/scores.js */
 /* scores.js – globale Bestenlisten, GETRENNT nach Spielart und Einstellungen:
-   Spielart (10 Runden / Solo Endlos) × Gegner-Stärke × Schwung-Stärke × Steuerung (3 Klicks / Klick & Hope / Point & Click).
+   Spielart (10 Runden / Solo Endlos) × Gegner-Stärke × Schwung-Stärke × Steuerung (3 Klicks / Aim & Hope / Point & Click).
    Jede Kombination ist eine eigene Liste ("Gruppe"). Speicherort: Firebase Realtime Database (REST, kein Konto nötig):
    hs2/<gruppe>/<uid>.json (Gruppen z=10 Runden, e=Endlos, k=King of the Hill; k wie z mit {best}) mit {name,best,ts,lk} (10 Runden) bzw. {name,lvl,pts,ts,lk} (Endlos).
    Jeder Browser hat eine zufällige uid (lokal gespeichert) und schreibt nur seinen eigenen Eintrag.
@@ -12362,9 +12423,9 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
     },
     /** Lesbare Beschreibung einer Gruppe */
     label(key, de) {
-      if (key[0] === 'g' && KEY_RE.test(key)) return (de ? 'GOLFPLATZ · 9 LÖCHER · ' : 'GOLF COURSE · 9 HOLES · ') + { E: de ? 'LEICHT · ' : 'EASY · ', M: de ? 'MITTEL · ' : 'MEDIUM · ', H: de ? 'SCHWER · ' : 'HARD · ' }[key[3]] + { c: de ? '3 KLICKS' : '3 CLICKS', l: 'KLICK & HOPE', i: 'POINT & CLICK' }[key[5]];
+      if (key[0] === 'g' && KEY_RE.test(key)) return (de ? 'GOLFPLATZ · 9 LÖCHER · ' : 'GOLF COURSE · 9 HOLES · ') + { E: de ? 'LEICHT · ' : 'EASY · ', M: de ? 'MITTEL · ' : 'MEDIUM · ', H: de ? 'SCHWER · ' : 'HARD · ' }[key[3]] + { c: de ? '3 KLICKS' : '3 CLICKS', l: 'AIM & HOPE', i: 'POINT & CLICK' }[key[5]];
       const m = KEY_RE.test(key) ? key : 'z-MM-c', n = { E: de ? 'LEICHT' : 'EASY', M: de ? 'MITTEL' : 'MEDIUM', H: de ? 'SCHWER' : 'HARD' };
-      const c = { c: de ? '3 KLICKS' : '3 CLICKS', l: 'KLICK & HOPE', i: 'POINT & CLICK' };
+      const c = { c: de ? '3 KLICKS' : '3 CLICKS', l: 'AIM & HOPE', i: 'POINT & CLICK' };
       return (m[0] === 'e' ? (de ? 'ENDLOS' : 'ENDLESS') : m[0] === 'k' ? 'KING OF THE HILL' : (de ? '10 RUNDEN' : '10 ROUNDS')) + ' · ' + (de ? 'Gegner ' : 'Opponents ') + n[m[2]] + ' · ' + (de ? 'Schwung ' : 'Swing ') + n[m[3]] + ' · ' + c[m[5]];
     },
 
@@ -12386,22 +12447,15 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
 
     admin: (() => { try { return localStorage.getItem('bgAdm') === '1'; } catch (e) { return false; } })(),
     setAdmin(on) { this.admin = !!on; try { localStorage.setItem('bgAdm', on ? '1' : '0'); } catch (e) { /* egal */ } if (this.onChange) this.onChange(); },
-    /** Admin: alle Einträge mit diesem Namen in der Gruppe löschen (angezeigt wird pro Name nur der beste) */
-    async adminDelete(key, name) {
+    /** Admin: einen Eintrag (Gerät) aus der Gruppe löschen */
+    async adminDelete(key, id) {
       if (!this.admin) return { ok: false, msg: 'Kein Admin' };
-      const nk = String(name || '').trim().toLowerCase(); let n = 0;
       try {
-        const res = await fetch(this.base + '/hs2/' + key + '.json', { cache: 'no-store' });
-        const data = (await res.json()) || {};
-        for (const id of Object.keys(data)) {
-          const v = data[id]; if (!v || String(v.name || '').trim().toLowerCase() !== nk) continue;
-          const d = await fetch(this.base + '/hs2/' + key + '/' + id + '.json', { method: 'DELETE' });
-          if (!d.ok) return { ok: false, msg: 'Löschen nicht erlaubt (HTTP ' + d.status + ') – Firebase-Regeln für hs2 prüfen' };
-          n++;
-        }
+        const d = await fetch(this.base + '/hs2/' + key + '/' + id + '.json', { method: 'DELETE' });
+        if (!d.ok) return { ok: false, msg: 'Löschen nicht erlaubt (HTTP ' + d.status + ') – Firebase-Regeln für hs2 prüfen' };
       } catch (e) { return { ok: false, msg: 'Fehler: ' + e.message }; }
       await this.refresh();
-      return { ok: true, n };
+      return { ok: true, n: 1 };
     },
 
     async refresh() {
@@ -12525,7 +12579,6 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       const has = endless ? loc.lvl > 0 : loc.best > 0;
       if (!rows.some(r => r.me) && has) rows.push(Object.assign({ id: 'me', name: P.data.name || 'Spieler', me: true, local: true, look: Object.assign({}, P.look) }, endless ? { lvl: loc.lvl, pts: loc.pts, best: loc.lvl } : { best: loc.best }));
       rows.sort(endless ? (a, b) => (b.lvl - a.lvl) || (b.pts - a.pts) : LOW(key) ? (a, b) => a.best - b.best : (a, b) => b.best - a.best);
-      { const seenN = new Set(); for (let i = 0; i < rows.length; i++) { const nk = String(rows[i].name || '').trim().toLowerCase(); if (nk && seenN.has(nk)) { rows.splice(i, 1); i--; } else seenN.add(nk); } }   // gleicher Name mehrfach: nur der beste Eintrag (Liste ist schon sortiert)
       const fmt = (d) => d === 0 ? 'E' : (d > 0 ? '+' : '') + d;
       rows.forEach((r, i) => { r.rank = i + 1; r.txt = endless ? 'L' + r.lvl + ' · ' + r.pts : LOW(key) ? r.best + ' (' + fmt(r.best - GOLF_PAR) + ')' : String(r.best); });
       const top = rows.slice(0, n), me = rows.find(r => r.me);
@@ -12710,11 +12763,11 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
 
   const TX = {
     de: {
-      names: ['3 KLICKS', 'KLICK & HOPE', 'POINT & CLICK'],
+      names: ['3 KLICKS', 'AIM & HOPE', 'POINT & CLICK'],
       lesson: 'SCHWUNG',
       go: 'LOS', next: 'NÄCHSTER SCHWUNG', skip: 'TROTZDEM WEITER', fin: 'FERTIG', play: 'LOS GEHT\'S', menu: 'ZURÜCK INS MENÜ',
       introT: 'DIE 3 STEUERUNGEN',
-      intro: 'Das sind die <b>3 Steuerungen</b> (Schwungarten), zwischen denen du im Menü wählen kannst: 3 Klicks, Klick &amp; Hope, Point &amp; Click. Du probierst jede aus. Triff jeweils den <b style="color:#ff5fb8">pinken Kreis</b>.<br><b style="color:#ffc83d">★ Tipp:</b> <b>Klick &amp; Hope</b> ist der Favorit des Entwicklers.',
+      intro: 'Das sind die <b>3 Steuerungen</b> (Schwungarten), zwischen denen du im Menü wählen kannst: 3 Klicks, Aim &amp; Hope, Point &amp; Click. Du probierst jede aus. Triff jeweils den <b style="color:#ff5fb8">pinken Kreis</b>.<br><b style="color:#ffc83d">★ Tipp:</b> <b>Aim &amp; Hope</b> ist der Favorit des Entwicklers.',
       c_aim: 'ZIELEN: Drehe mit {AD}, bis die Punkte zum Kreis zeigen.',
       c_start: 'Starte den Schlag mit {SPACE}.',
       c_1: '<b>Schlag 1 · Weite:</b> {SPACE} bei ca. <b>{pw} %</b>.',
@@ -12742,11 +12795,11 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       CLICK: 'Klicke', CLICK_t: 'Tippe', UNDO: 'Rechtsklick', UNDO_t: 'Button ✕'
     },
     en: {
-      names: ['3 CLICKS', 'CLICK & HOPE', 'POINT & CLICK'],
+      names: ['3 CLICKS', 'AIM & HOPE', 'POINT & CLICK'],
       lesson: 'SWING',
       go: 'GO', next: 'NEXT SWING', skip: 'CONTINUE ANYWAY', fin: 'FINISH', play: 'LET\'S PLAY', menu: 'BACK TO MENU',
       introT: 'THE 3 CONTROLS',
-      intro: 'These are the <b>3 controls</b> (swing types) you can choose in the menu: 3 clicks, click &amp; hope, point &amp; click. You try each one. Always hit the <b style="color:#ff5fb8">pink circle</b>.<br><b style="color:#ffc83d">★ Tip:</b> <b>Click &amp; hope</b> is the developer\'s favourite.',
+      intro: 'These are the <b>3 controls</b> (swing types) you can choose in the menu: 3 clicks, aim &amp; hope, point &amp; click. You try each one. Always hit the <b style="color:#ff5fb8">pink circle</b>.<br><b style="color:#ffc83d">★ Tip:</b> <b>Aim &amp; hope</b> is the developer\'s favourite.',
       c_aim: 'AIM: turn with {AD} until the dots point at the circle.',
       c_start: 'Start the swing with {SPACE}.',
       c_1: '<b>Shot 1 · Distance:</b> {SPACE} at about <b>{pw}%</b>.',
@@ -12920,8 +12973,8 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
 /* version.js – Versionsnummer. VERSION von Hand erhöhen; BUILD (Datum/Uhrzeit) setzt tools/build.js beim Bauen. */
 (function (BG) {
   'use strict';
-  BG.VERSION = '1.14';
-  BG.BUILD = '11.10. 13:07';
+  BG.VERSION = '1.16';
+  BG.BUILD = '11.10. 13:22';
   BG.versionText = () => 'v' + BG.VERSION + (BG.BUILD.indexOf('__') === 0 ? ' · dev' : ' · ' + BG.BUILD);
 })(globalThis.BG = globalThis.BG || {});
 
@@ -12952,7 +13005,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       $('btnMpLeave').onclick = () => this.mpLeave();
       $('btnMpReady').onclick = () => { const me = BG.Net.lobby().find(p => p.me); BG.Net.setReady(!(me && me.rd)); h.onClick && h.onClick(); setTimeout(() => this.renderRoom(), 30); };
       $('btnMpStart').onclick = () => { h.onNetHost && h.onNetHost({ map: this.segVal('mpMap'), skill: this.segVal('mpSkill'), mode: this.segVal('mpMode') }); };
-      ['mpMap', 'mpSkill', 'mpMode'].forEach(id => $(id).addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; $(id).querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); h.onClick && h.onClick(); }));
+      ['mpMap', 'mpSkill', 'mpMode'].forEach(id => $(id).addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; $(id).querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); if (id === 'mpMode') this.mpModeUi(); h.onClick && h.onClick(); }));
       BG.Net.cb.onLobby = () => this.renderRoom();
       BG.Net.cb.onStale = () => { this.mpLeave(); $('mpMsg').textContent = I.t('mp.running'); };
       BG.Scores.onChange = () => this.renderScores();
@@ -12988,7 +13041,8 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       $('btnModesBack').onclick = () => this.show('home');
       $('btnGolf').onclick = () => { h.onClick && h.onClick(); this.show('golf'); };
       $('btnGolfBack').onclick = () => this.show('modes');
-      ['gSw', 'gCtl'].forEach(id => { const seg = $(id); seg.addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; seg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); h.onClick && h.onClick(); }); });
+      const golfSync = () => { const easy = $('gSw').querySelector('.on').dataset.v === 'EASY', pc = $('gCtl').querySelector('[data-v=instant]'); pc.disabled = !easy; pc.style.opacity = easy ? '' : '.4'; pc.title = easy ? '' : 'Nur bei Schwierigkeit „Leicht“'; if (!easy && pc.classList.contains('on')) { pc.classList.remove('on'); $('gCtl').querySelector('[data-v=classic]').classList.add('on'); } };
+      ['gSw', 'gCtl'].forEach(id => { const seg = $(id); seg.addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b || b.disabled) return; seg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); golfSync(); h.onClick && h.onClick(); }); }); golfSync();
       const golfOpts = (extra) => { const o = BG.UI.readOpts(), v = (id) => $(id).querySelector('.on').dataset.v; o.swingSkill = v('gSw'); const c = v('gCtl'); o.ctl = c === 'line' ? 'line' : 'classic'; o.timing = c !== 'instant'; return Object.assign(o, extra); };
       $('btnGolfRound').onclick = () => { h.onClick && h.onClick(); h.onStart(golfOpts({ golf: true, hole: 1, round: true, scores: [] })); };
       { const box = $('golfHoles'), nm = (BG.Gc && BG.Gc.NAMES) || []; for (let i = 1; i <= 9; i++) { const b = document.createElement('button'); b.className = 'btn ghost'; b.innerHTML = '<b>' + i + '</b><br><small>' + (nm[i] || '') + '</small>'; b.style.cssText = 'padding:8px 4px;line-height:1.15'; b.onclick = () => { h.onClick && h.onClick(); h.onStart(golfOpts({ golf: true, hole: i, round: false, scores: [] })); }; box.appendChild(b); } }
@@ -13181,6 +13235,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       if (name === 'setup' && BG.UI && BG.UI.syncTiming) BG.UI.syncTiming();
       $('mCustom').hidden = name !== 'custom';
       $('mMulti').hidden = name !== 'multi';
+      if (name !== 'multi') MV.setLobby(null); else if (BG.Net.active && !BG.Net.ingame) this.renderRoom();
       $('mShop').hidden = name !== 'shop';
       $('mCollection').hidden = name !== 'collection';
       if (name === 'collection' || name === 'home') this.buildCollection();
@@ -13457,6 +13512,12 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
     },
 
     esc(t) { return String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); },
+    /** Mehrspieler-Modus: bei Golfplatz entfällt die Kartenwahl, "Gegner-Stärke" wird zur Schwierigkeit des Schwungs */
+    mpModeUi() {
+      const golf = this.segVal('mpMode') === 'golf', de = P.data.lang === 'de';
+      const m = $('mpMap'); if (m && m.parentElement) m.parentElement.hidden = golf;
+      const sk = $('mpSkill'); if (sk && sk.previousElementSibling) sk.previousElementSibling.textContent = golf ? (de ? 'Schwierigkeit' : 'Difficulty') : I.t('setup.opp');
+    },
     segVal(id) { const b = $(id).querySelector('.on'); return b ? b.dataset.v : null; },
 
     toast(html, ms) {
@@ -13475,7 +13536,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       const lv = de ? ['LEICHT', 'MITTEL', 'SCHWER'] : ['EASY', 'MEDIUM', 'HARD'];
       fill('hsOpp', ['EASY', 'MEDIUM', 'HARD'], lv, SC.sel.opp, I.t('hs.opp'));
       fill('hsSw', ['EASY', 'MEDIUM', 'HARD'], lv, SC.sel.sw, I.t('hs.sw'));
-      fill('hsCtl', ['classic', 'line', 'instant'], [de ? '3 KLICKS' : '3 CLICKS', 'KLICK & HOPE', 'POINT & CLICK'], SC.sel.ctl, I.t('hs.ctl'));
+      fill('hsCtl', ['classic', 'line', 'instant'], [de ? '3 KLICKS' : '3 CLICKS', 'AIM & HOPE', 'POINT & CLICK'], SC.sel.ctl, I.t('hs.ctl'));
       $('hsSub').textContent = SC.label(SC.selKey(), de);
       rows.forEach(r => {
         const li = document.createElement('li'); if (r.me) li.className = 'me';
@@ -13490,7 +13551,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
           li.style.gridTemplateColumns = '24px 30px 1fr auto auto';
           const x = document.createElement('button'); x.textContent = '✕'; x.title = de ? 'Eintrag löschen (Admin)' : 'Delete entry (admin)';
           x.style.cssText = 'margin:0;border:0;border-radius:6px;background:#8a2b2b;color:#fff;font-weight:800;padding:1px 7px;cursor:pointer';
-          x.onclick = async (ev) => { ev.stopPropagation(); const nm = r.me ? P.data.name : r.name; if (!confirm((de ? 'Alle Einträge von "' : 'Delete all entries of "') + nm + (de ? '" in dieser Bestenliste löschen?' : '" in this board?'))) return; x.disabled = true; const res = await SC.adminDelete(SC.selKey(), nm); if (!res.ok) alert(res.msg); this.renderScores(); };
+          x.onclick = async (ev) => { ev.stopPropagation(); const nm = r.me ? P.data.name : r.name; if (!confirm((de ? 'Eintrag von "' : 'Delete entry of "') + nm + (de ? '" löschen?' : '"?'))) return; x.disabled = true; const res = await SC.adminDelete(SC.selKey(), r.id); if (!res.ok) alert(res.msg); this.renderScores(); };
           li.appendChild(x);
         }
         ol.appendChild(li);
@@ -13539,9 +13600,9 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       } catch (e) { console.error(e); msg.textContent = I.t('mp.err') + ': ' + (e && e.message || e); }
       finally { btn.disabled = false; }
     },
-    mpLeave() { BG.Net.leave(); $('mpEntry').hidden = false; $('mpRoom').hidden = true; },
+    mpLeave() { BG.Net.leave(); MV.setLobby(null); $('mpEntry').hidden = false; $('mpRoom').hidden = true; },
     renderRoom() {
-      if (!BG.Net.active || BG.Net.ingame) return;
+      if (!BG.Net.active || BG.Net.ingame) { MV.setLobby(null); return; }
       $('mpEntry').hidden = true; $('mpRoom').hidden = false;
       $('mpRoomCode').textContent = BG.Net.code;
       $('mpHost').hidden = !BG.Net.isHost; $('mpWait').hidden = BG.Net.isHost;
@@ -13552,6 +13613,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
         const tag = document.createElement('small'); tag.textContent = (p.host ? I.t('mp.host') + ' · ' : '') + (t >= 0 ? I.t('mp.team' + t) : I.t('mp.full')) + (p.host || p.rd ? (p.host ? '' : ' · ✓') : '');
         d.appendChild(tag); list.appendChild(d);
       });
+      MV.setLobby(lob.map((p) => ({ me: p.me, name: p.name, look: p.look ? P.cleanLook(p.look) : null, css: as[p.peer] >= 0 ? BG.CONFIG.teams[as[p.peer]].css : '#888' })));
       // Teamwahl: belegte Teams sind gesperrt
       const tp = $('mpTeams'); tp.innerHTML = '';
       for (let i = 0; i < 3; i++) {
@@ -13969,6 +14031,14 @@ body.fsstandalone #fsBtn{display:none!important}`;
   function startNet(pkt) {
     const N = BG.Net, me = N.lobby().find(p => p.me), mine = me && pkt.hs.find(h => h.p === me.peer), P = BG.Prefs;
     if (!mine) { BG.Menu.toast('Raum voll'); return; }
+    if (pkt.mode === 'golf') {                                         // Golfplatz-Mehrspieler: jeder spielt seine eigene Runde, nur die Schläge werden live geteilt
+      const sk = ['EASY', 'MEDIUM', 'HARD'].includes(pkt.skill) ? pkt.skill : 'MEDIUM';
+      N.ingame = true; N.golfMode = true; N.golfPlayers = pkt.hs.map(h => ({ p: h.p, tm: h.tm, n: P.cleanName(h.n) || '?' }));
+      N.setPresence({ gp: { h: 1, s: 0, sc: [], d: 0 } });
+      const o = Object.assign(BG.UI.readOpts(), { golf: true, hole: 1, round: true, scores: [], botSkill: sk, swingSkill: sk, seed: pkt.seed >>> 0, mp: true });
+      if (C.ctlMode) o.ctl = C.ctlMode; o.timing = sk === 'EASY' ? C.timingMeter !== false : true;
+      startMatch(o); return;
+    }
     const names = ['', '', ''], looks = {};
     pkt.hs.forEach(h => { names[h.tm] = P.cleanName(h.n) || '?'; looks[h.tm] = P.cleanLook(h.lk); });
     W.netLooks = looks;
@@ -14372,8 +14442,8 @@ body.fsstandalone #fsBtn{display:none!important}`;
           if (mine(e.ball.team) && !game.tutorial) { const de = BG.Prefs.data.lang !== 'en'; UI.banner(e.hole ? (de ? 'EINGELOCHT!' : 'HOLE IN!') : e.total + ' m', (de ? 'Carry ' : 'Carry ') + e.carry + ' m · ' + (de ? 'Gesamt ' : 'Total ') + e.total + ' m', '#9dffb8'); } break;
         case 'golflie': if (BG.GcView) BG.GcView.onLie(game, Ctl, Rig, e); break;
         case 'golfpenalty': if (BG.GcView) BG.GcView.onPenalty(e, UI, Au); break;
-        case 'holeout': if (e.round && e.last && e.scores.filter(v => v != null).length >= 9 && BG.Scores) { const tot = e.scores.reduce((a, b) => a + (b || 0), 0); BG.Scores.submit('golf', Object.assign({ score: tot }, BG.Scores.current())).then((rec) => { if (rec) UI.banner(BG.Prefs.data.lang === 'en' ? 'NEW BEST ROUND' : 'NEUE BESTRUNDE', tot + (BG.Prefs.data.lang === 'en' ? ' strokes' : ' Schläge'), '#ffe28a'); }); }
-        case 'holeout': if (BG.GcView) BG.GcView.onHoleout(e, game, { next: (sc) => startMatch({ golf: true, hole: e.hole + 1, scores: sc, round: true }), again: () => startMatch({ golf: true, hole: e.hole, scores: e.scores.slice(0, e.hole - 1), round: e.round }), menu: toMenu }, Au); break;
+        case 'holeout': if (e.round && e.last && e.scores.filter(v => v != null).length >= 9 && BG.Scores && !BG.Net.golfMode) { const tot = e.scores.reduce((a, b) => a + (b || 0), 0); BG.Scores.submit('golf', Object.assign({ score: tot }, BG.Scores.current())).then((rec) => { if (rec) UI.banner(BG.Prefs.data.lang === 'en' ? 'NEW BEST ROUND' : 'NEUE BESTRUNDE', tot + (BG.Prefs.data.lang === 'en' ? ' strokes' : ' Schläge'), '#ffe28a'); }); }
+        case 'holeout': if (BG.GcView) BG.GcView.onHoleout(e, game, { next: (sc) => startMatch({ golf: true, hole: e.hole + 1, scores: sc, round: true, botSkill: lastSkill, swingSkill: lastSkill, ctl: C.ctlMode, timing: C.timingMeter }), again: BG.Net.golfMode ? null : () => startMatch({ golf: true, hole: e.hole, scores: e.scores.slice(0, e.hole - 1), round: e.round, botSkill: lastSkill, swingSkill: lastSkill, ctl: C.ctlMode, timing: C.timingMeter }), menu: toMenu }, Au); break;
         case 'holein': { FX.burst(e.x, e.y + 0.4, e.z, 0xffffff, 22, 6, 0.9, 10); if (game.range && mine(e.ball.team)) Au.hole(1); break; }
         case 'go': UI.countdown(0, true); Au.go();
           if (game.turnMode && game.koth) { const de = BG.Prefs.data.lang !== 'en'; setTimeout(() => { UI.phaseTip((de ? 'RUNDE 1 / ' : 'ROUND 1 / ') + game.rounds + ' · ' + (de ? 'ZIELEN' : 'AIM'), de ? 'Jetzt bist du dran: 3 Schüsse, dann FERTIG' : 'Your turn: 3 shots, then DONE', '#9dffb8'); }, 700); }
