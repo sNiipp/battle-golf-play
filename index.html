@@ -584,6 +584,7 @@
     <button class="btn ghost big" id="btnCollection"><span id="colTitle">SAMMLUNG</span> <small id="colBal"></small></button>
     <div class="btnrow"><button class="btn ghost" id="btnTut" data-i18n="menu.tutorial"></button><button class="btn ghost" id="btnRules" data-i18n="menu.rules"></button><button class="btn ghost" id="btnOptions" data-i18n="menu.options"></button><button class="btn ghost" id="btnAdmin" hidden style="opacity:.7;font-size:.8em">ADMIN</button></div>
     <button class="lnk" id="btnCustom" data-i18n="menu.custom"></button>
+    <button class="lnk" id="btnAccount">KONTO / ANMELDEN</button>
     <button class="btn ghost" id="btnRotate" style="margin-top:6px;font-size:.85em">🔄 ROTATE</button>
     <div class="mhint" data-i18n="menu.hint"></div>
     <div class="mhint" id="verTag" style="opacity:.55;margin-top:4px"></div>
@@ -747,6 +748,7 @@
 </div></div>
 
 <div id="tabStats" class="screen" hidden><div class="card"><div class="lbl" style="margin-bottom:8px">Live-Statistik</div><table class="st" id="tabTable"></table></div></div>
+
 
 
 
@@ -1045,7 +1047,7 @@
   const DEFAULT_LOOK = {
     skin: 0xf0c4a0, hair: 0x4a2f1b, hairStyle: 'short', hat: 'none', hatColor: 0xe94b5b,
     top: 0xe94b5b, topStyle: 'polo', bottom: 0x2f3b57, bottomStyle: 'long', shoes: 0xf4f4f4,
-    pHead: 'Casual_Male', pTorso: 'Casual_Male', pArms: 'Casual_Male', pLegs: 'Casual_Male', pHair: 'own', pHat: 'none', cEye: -1, cBrow: -1, cSkin: -1, cHair: -1, cTop: -1, cBottom: -1, mc: {},
+    pHead: 'Casual_Male', pTorso: 'Casual_Male', pArms: 'Casual_Male', pLegs: 'Casual_Male', pHair: 'own', pHat: 'none', cEye: -1, cBrow: -1, cSkin: -1, cHair: -1, cTop: -1, cBottom: -1, skirt: 0, mc: {},
     model: 'parts'                                    // Standard: Baukasten-Mann mit passenden Haaren; 'custom' = selbst gestaltete Figur, 'parts' = Baukasten aus freigeschalteten Figuren (pHead…pLegs, Farben cSkin… -1 = Original)
   };
 
@@ -1062,6 +1064,7 @@
       for (const k in DEFAULT_LOOK) {
         const v = o[k];
         if (k === 'mc') { L.mc = {}; if (v && typeof v === 'object') { let n = 0; for (const key of Object.keys(v)) { if (n >= 40) break; if (/^(hat:|hair:)?[A-Za-z0-9_]{1,24}\/[A-Za-z0-9_]{1,24}$/.test(key) && typeof v[key] === 'number' && v[key] >= 0 && v[key] <= 0xffffff) { L.mc[key] = Math.floor(v[key]); n++; } } } }
+        else if (k === 'skirt') { L.skirt = v === 1 ? 1 : 0; }
         else if (k === 'model') { if (v === 'custom' || (v === 'parts' && BG.CharData)) L.model = v; }
         else if (k === 'pHair') { if (v === 'own' || v === 'none' || (typeof v === 'string' && BG.HairData && Object.prototype.hasOwnProperty.call(BG.HairData, v))) L[k] = v; }
         else if (k === 'pHat') { if (v === 'none' || (typeof v === 'string' && BG.HatData && Object.prototype.hasOwnProperty.call(BG.HatData, v))) L[k] = v; }
@@ -1140,7 +1143,7 @@
       'menu.new': 'NEUES SPIEL', 'menu.options': 'OPTIONEN', 'menu.custom': 'Figur anpassen', 'menu.tag': 'COMPETITIVE BATTLE GOLF',
       'menu.hint': 'Klick auf deine Figur zum Anpassen · Ziehen zum Drehen',
       'menu.multi': 'MEHRSPIELER', 'menu.tutorial': 'TUTORIAL', 'menu.rules': 'SPIELREGELN', 'menu.scores': 'HIGHSCORES',
-      'cust.name': 'Name', 'cust.namePh': 'Dein Name', 'cust.model': 'Figur', 'cust.pHead': 'Kopf', 'cust.pTorso': 'Oberteil', 'cust.pArms': 'Arme', 'cust.pLegs': 'Hose', 'cust.pHair': 'Frisur', 'cust.pHat': 'Kopfschmuck', 'cust.eyeC': 'Augenfarbe', 'cust.browC': 'Augenbrauen', 'hairown': 'Passend', 'hairnone': 'Keine',
+      'cust.name': 'Name', 'cust.namePh': 'Dein Name', 'cust.model': 'Figur', 'cust.pHead': 'Kopf', 'cust.pTorso': 'Oberteil', 'cust.pArms': 'Arme', 'cust.pLegs': 'Hose', 'cust.pHair': 'Frisur', 'cust.pHat': 'Kopfschmuck', 'cust.skirt': 'Rock', 'skirt.none': 'Kein Rock', 'skirt.golf': 'Golfrock', 'cust.eyeC': 'Augenfarbe', 'cust.browC': 'Augenbrauen', 'hairown': 'Passend', 'hairnone': 'Keine',
       'hs.title': 'GLOBALE HIGHSCORES', 'hs.sub': 'Beste Punktzahl je Spieler (1 Spieler pro Team) – wird nie zurückgesetzt', 'hs.denied': 'Die Datenbank lehnt den Zugriff ab (%s) – die Firebase-Regeln für „hs2“ müssen Lesen und Schreiben erlauben. Bis dahin zählt nur dein eigener Rekord.', 'hs.opp': 'Gegner', 'hs.sw': 'Schwung', 'hs.ctl': 'Steuerung', 'hs.tab.zone': '10 RUNDEN', 'hs.tab.end': 'ENDLOS', 'hs.tab.koth': 'KING OF THE HILL', 'hs.tab.golf': 'GOLFPLATZ', 'hs.emptyg': 'Noch keine Golfrunden. Spiel die 9 Löcher!', 'hs.emptyk': 'Noch keine KOTH-Läufe. Spiel eine Partie!', 'hs.subend': 'Weitestes Level in Solo Endlos (dann Gesamtpunkte) – wird nie zurückgesetzt', 'hs.recordend': 'NEUER ENDLOS-REKORD!', 'hs.empty2': 'Noch keine Endlos-Läufe. Schaff ein Level!', 'hs.empty': 'Noch keine Einträge. Spiel eine Runde!', 'hs.local': 'Offline – nur dein eigener Rekord wird angezeigt.', 'hs.you': 'DU', 'hs.single': 'Highscore zählt nur mit 1 Spieler pro Team.', 'hs.new': 'hat einen neuen Highscore:', 'hs.beat': 'und hat dich überholt!', 'hs.record': 'NEUER HIGHSCORE!', 'hs.best': 'Dein Rekord',
       'mp.title': 'MEHRSPIELER', 'mp.create': 'RAUM ERSTELLEN', 'mp.join': 'BEITRETEN', 'mp.code': 'Raum-Code', 'mp.codePh': 'CODE', 'mp.share': 'Gib diesen Code deinen Freunden:', 'mp.players': 'Spieler im Raum', 'mp.host': 'HOST', 'mp.you': 'DU', 'mp.start': 'SPIEL STARTEN', 'mp.leave': 'RAUM VERLASSEN', 'mp.joining': 'Verbinde …', 'mp.running': 'In diesem Raum läuft schon ein Spiel.', 'mp.err': 'Fehler', 'mp.team': 'Team wählen', 'mp.ready': 'BEREIT', 'mp.unready': 'NICHT MEHR BEREIT', 'mp.readyN': 'bereit', 'mp.waitAll': 'Warte, bis alle bereit sind …', 'mp.full': 'Raum voll – nur 3 Spieler', 'mp.team0': 'ROT', 'mp.team1': 'BLAU', 'mp.team2': 'GRÜN', 'mp.waitHost': 'Warte auf den Host …', 'mp.bots': 'Freie Plätze füllen Bots.', 'mp.unavail': 'Mehrspieler nicht verfügbar – Internetverbindung / Vermittlungsdienst nicht erreichbar.', 'mp.fail': 'Raum nicht erreichbar. Code prüfen?', 'mp.hostLeft': 'Der Host hat das Spiel verlassen.', 'mp.dropped': 'Spieler weg – jetzt ein Bot:', 'mp.max': 'Maximal 3 Spieler (Rot, Blau, Grün).',
       'tut.title': 'SO FUNKTIONIERT BATTLE GOLF', 'tut.next': 'WEITER', 'tut.prev': 'ZURÜCK', 'tut.close': 'SCHLIESSEN',
@@ -1160,7 +1163,7 @@
       'menu.new': 'NEW GAME', 'menu.options': 'OPTIONS', 'menu.custom': 'Customize player', 'menu.tag': 'COMPETITIVE BATTLE GOLF',
       'menu.hint': 'Click your player to customize · Drag to rotate',
       'menu.multi': 'MULTIPLAYER', 'menu.tutorial': 'TUTORIAL', 'menu.rules': 'RULES', 'menu.scores': 'HIGHSCORES',
-      'cust.name': 'Name', 'cust.namePh': 'Your name', 'cust.model': 'Character', 'cust.pHead': 'Head', 'cust.pTorso': 'Top', 'cust.pArms': 'Arms', 'cust.pLegs': 'Pants', 'cust.pHair': 'Hairstyle', 'cust.pHat': 'Headwear', 'cust.eyeC': 'Eye color', 'cust.browC': 'Eyebrows', 'hairown': 'Matching', 'hairnone': 'None',
+      'cust.name': 'Name', 'cust.namePh': 'Your name', 'cust.model': 'Character', 'cust.pHead': 'Head', 'cust.pTorso': 'Top', 'cust.pArms': 'Arms', 'cust.pLegs': 'Pants', 'cust.pHair': 'Hairstyle', 'cust.pHat': 'Headwear', 'cust.skirt': 'Skirt', 'skirt.none': 'No skirt', 'skirt.golf': 'Golf skirt', 'cust.eyeC': 'Eye color', 'cust.browC': 'Eyebrows', 'hairown': 'Matching', 'hairnone': 'None',
       'hs.title': 'GLOBAL HIGHSCORES', 'hs.sub': 'Best score per player (1 player per team) – never reset', 'hs.denied': 'The database refuses access (%s) – the Firebase rules for "hs2" must allow read and write. Until then only your own record is shown.', 'hs.opp': 'Opponents', 'hs.sw': 'Swing', 'hs.ctl': 'Controls', 'hs.tab.zone': '10 ROUNDS', 'hs.tab.end': 'ENDLESS', 'hs.tab.golf': 'GOLF COURSE', 'hs.emptyg': 'No golf rounds yet. Play the 9 holes!', 'hs.tab.koth': 'KING OF THE HILL', 'hs.emptyk': 'No KOTH runs yet. Play a match!', 'hs.subend': 'Furthest level in Solo Endless (then total points) – never reset', 'hs.recordend': 'NEW ENDLESS RECORD!', 'hs.empty2': 'No endless runs yet. Clear a level!', 'hs.empty': 'No entries yet. Play a round!', 'hs.local': 'Offline – only your own record is shown.', 'hs.you': 'YOU', 'hs.single': 'Highscores only count with 1 player per team.', 'hs.new': 'set a new highscore:', 'hs.beat': 'and passed you!', 'hs.record': 'NEW HIGHSCORE!', 'hs.best': 'Your record',
       'mp.title': 'MULTIPLAYER', 'mp.create': 'CREATE ROOM', 'mp.join': 'JOIN', 'mp.code': 'Room code', 'mp.codePh': 'CODE', 'mp.share': 'Give this code to your friends:', 'mp.players': 'Players in room', 'mp.host': 'HOST', 'mp.you': 'YOU', 'mp.start': 'START GAME', 'mp.leave': 'LEAVE ROOM', 'mp.joining': 'Connecting …', 'mp.running': 'A game is already running in this room.', 'mp.err': 'Error', 'mp.team': 'Choose team', 'mp.ready': 'READY', 'mp.unready': 'NOT READY', 'mp.readyN': 'ready', 'mp.waitAll': 'Waiting until everyone is ready …', 'mp.full': 'Room full – 3 players only', 'mp.team0': 'RED', 'mp.team1': 'BLUE', 'mp.team2': 'GREEN', 'mp.waitHost': 'Waiting for the host …', 'mp.bots': 'Open slots are filled with bots.', 'mp.unavail': 'Multiplayer unavailable – no internet connection / matchmaking service unreachable.', 'mp.fail': 'Room not reachable. Check the code?', 'mp.hostLeft': 'The host left the game.', 'mp.dropped': 'Player left – now a bot:', 'mp.max': 'Up to 3 players (Red, Blue, Green).',
       'tut.title': 'HOW BATTLE GOLF WORKS', 'tut.next': 'NEXT', 'tut.prev': 'BACK', 'tut.close': 'CLOSE',
@@ -5536,7 +5539,13 @@
       const m = new THREE.SkinnedMesh(e.geo, mats); m.frustumCulled = false; g.add(m); m.bind(skel);
       return e;
     };
-    mesh(src.torso, 'torso'); mesh(src.legs, 'legL'); mesh(src.legs, 'legR');       // Oberteil = Rumpf + Arme in einem Stück
+    const skirt = look.skirt === 1;
+    if (skirt) {                                                                  // Golfrock: Beine in Hautfarbe (statt Hose) + kurzer Rock an der Hüfte
+      const lm = matsOf(src.legs, true).map((m, i) => { const D = BG.CharData[src.legs].mats[i]; if (!D || D.role !== 'bottom') return m; const c = m.clone(); c.skinning = true; c.color.set(look.cSkin >= 0 ? look.cSkin : 0xe8b690); return c; });
+      const legM = (part) => { const e = geoOf(src.legs, part); if (!e) return; const m = new THREE.SkinnedMesh(e.geo, lm); m.frustumCulled = false; g.add(m); m.bind(skel); };
+      legM('legL'); legM('legR');
+    }
+    mesh(src.torso, 'torso'); if (!skirt) { mesh(src.legs, 'legL'); mesh(src.legs, 'legR'); }       // Oberteil = Rumpf + Arme in einem Stück
     const L2 = Math.hypot(R.fist[0] - R.elbow[0], R.fist[1] - R.elbow[1]) + 0.1;
     // Kopf (nur Mann/Frau), Frisur (nur Haare) und Kopfschmuck (Hut/Helm/Maske) sind getrennte Teile
     const hat = look.pHat && look.pHat !== 'none' && BG.HatData && BG.HatData[look.pHat] ? look.pHat : null, full = !!(hat && BG.HatData[hat].full);
@@ -5547,6 +5556,11 @@
       if (hid) piece('hair', hid);
     }
     if (hat) piece('hat', hat);
+    if (skirt) {
+      const col = look.cBottom >= 0 ? look.cBottom : 0xf1f1f6, sk = new THREE.Mesh(new THREE.CylinderGeometry(LEGX * 1.85, LEGX * 2.5, 0.34, 20, 1, true), new THREE.MeshLambertMaterial({ color: col, side: THREE.DoubleSide }));
+      sk.position.y = -0.1; body.add(sk);
+      const bd = new THREE.Mesh(new THREE.CylinderGeometry(LEGX * 1.9, LEGX * 1.9, 0.05, 20), new THREE.MeshLambertMaterial({ color: 0xffffff })); bd.position.y = 0.05; body.add(bd);   // heller Bund
+    }
     return { g, body, up, legs, arms, fores, head, hip: HIP, L: [Math.hypot(ELX, ELY), L2], sh: [SHX, SHY] };
   }
 
@@ -12430,6 +12444,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
     },
 
     uid() {
+      if (BG.Account && BG.Account.id) return BG.Account.id;      // mit Konto: Einträge laufen unter dem Konto
       if (!P.data.uid || !/^[a-z0-9]{8,24}$/.test(P.data.uid)) {
         let s = ''; const A = 'abcdefghijklmnopqrstuvwxyz0123456789';
         for (let i = 0; i < 14; i++) s += A[Math.floor(Math.random() * A.length)];
@@ -12588,6 +12603,155 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
   };
 
   BG.Scores = Scores;
+})(globalThis.BG = globalThis.BG || {});
+
+/* src/account.js */
+/* account.js – Konten ohne E-Mail: Name + Passwort. Das Passwort verlässt das Gerät nie, nur ein PBKDF2-Hash (acc/<name> in der Firebase-Datenbank).
+   Gespeichert wird der Fortschritt (Prefs: Figur, Shop, Sammlung, Rekorde … und der Endlos-Stand); Geräte-Einstellungen (Grafik, Lautstärke …) bleiben lokal.
+   Mit Konto laufen auch die Bestenlisten-Einträge unter dem Konto statt unter der Geräte-ID. */
+(function (BG) {
+  'use strict';
+  const PKEY = 'battlegolf.prefs.v1', ESAVE = 'bgEndlessSave', AKEY = 'bgAcc', DEVICE = ['gfx', 'bright', 'contrast', 'volume', 'ambient', 'uid', 'menuBg', 'bgRand', 'bgRange', 'lang'];
+  const base = () => (BG.Scores && BG.Scores.base) || 'https://battlegolf-24048-default-rtdb.europe-west1.firebasedatabase.app';
+  const ls = { get: (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* egal */ } }, del: (k) => { try { localStorage.removeItem(k); } catch (e) { /* egal */ } } };
+  const clean = (n) => String(n || '').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 16);
+  const hex = (buf) => Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  async function derive(key, pw) {
+    const enc = new TextEncoder(), km = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveBits']);
+    return hex(await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: enc.encode('battlegolf:' + key), iterations: 120000 }, km, 256));
+  }
+
+  const A = {
+    name: '', key: '', h: '', id: '', busy: false, lastBlob: '', msg: '',
+    init() {
+      try { const s = JSON.parse(ls.get(AKEY) || 'null'); if (s && s.key && s.h) { this.name = s.name; this.key = s.key; this.h = s.h; this.id = 'acct' + s.key; this.lastBlob = s.lb || ''; this.ts = s.ts || 0; } } catch (e) { /* egal */ }
+    },
+    on() { return !!this.key; },
+    save() { ls.set(AKEY, JSON.stringify({ name: this.name, key: this.key, h: this.h, lb: this.lastBlob, ts: this.ts || 0 })); },
+    blob() {
+      let p = {}; try { p = JSON.parse(ls.get(PKEY) || '{}') || {}; } catch (e) { p = {}; }
+      DEVICE.forEach(k => { delete p[k]; });
+      return JSON.stringify({ p, e: ls.get(ESAVE) || null });
+    },
+    apply(blobStr) {
+      let b; try { b = JSON.parse(blobStr); } catch (e) { return false; }
+      if (!b || typeof b.p !== 'object' || !b.p) return false;
+      let loc = {}; try { loc = JSON.parse(ls.get(PKEY) || '{}') || {}; } catch (e) { loc = {}; }
+      const np = Object.assign({}, b.p); DEVICE.forEach(k => { if (k in loc) np[k] = loc[k]; else delete np[k]; });
+      ls.set(PKEY, JSON.stringify(np)); if (b.e) ls.set(ESAVE, b.e); else ls.del(ESAVE);
+      return true;
+    },
+    async fetchAcc() {
+      const r = await fetch(base() + '/acc/' + this.tryKey + '.json', { cache: 'no-store' });
+      if (!r.ok) throw new Error('http ' + r.status);
+      return r.json();
+    },
+    async put(rec, key, h) {
+      const r = await fetch(base() + '/acc/' + key + '.json', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(rec) });
+      if (!r.ok) throw new Error('http ' + r.status);
+    },
+    /** mode: 'login' | 'create' – gibt { ok, msg } zurück */
+    async enter(mode, name, pw) {
+      const key = clean(name); this.tryKey = key;
+      if (key.length < 4) return { ok: false, msg: 'Name: mindestens 4 Zeichen (Buchstaben/Zahlen).' };
+      if (String(pw || '').length < 6) return { ok: false, msg: 'Passwort: mindestens 6 Zeichen.' };
+      if (!(window.crypto && crypto.subtle)) return { ok: false, msg: 'Dieser Browser/diese Seite unterstützt keine Konten (https nötig).' };
+      try {
+        const h = await derive(key, pw), cur = await this.fetchAcc();
+        if (mode === 'create') {
+          if (cur) return { ok: false, msg: 'Dieser Name ist schon vergeben.' };
+          const lb = this.blob(), ts = Date.now();
+          await this.put({ h, d: lb, ts }, key);
+          Object.assign(this, { name: String(name).trim().slice(0, 16), key, h, id: 'acct' + key, lastBlob: lb, ts }); this.save();
+          return { ok: true, msg: 'Konto erstellt. Dein Fortschritt ist gespeichert.', reload: true };
+        }
+        if (!cur) return { ok: false, msg: 'Konto nicht gefunden.' };
+        if (cur.h !== h) return { ok: false, msg: 'Falsches Passwort.' };
+        this.apply(cur.d);
+        Object.assign(this, { name: String(name).trim().slice(0, 16), key, h, id: 'acct' + key, lastBlob: this.blob(), ts: cur.ts || 0 }); this.save();
+        return { ok: true, msg: 'Angemeldet. Dein Fortschritt wird geladen …', reload: true };
+      } catch (e) { return { ok: false, msg: 'Keine Verbindung zur Datenbank (' + (e && e.message || e) + '). Regeln für "acc" prüfen.' }; }
+    },
+    logout() { this.name = this.key = this.h = this.id = ''; this.lastBlob = ''; ls.del(AKEY); },
+    /** Lokale Änderungen hochladen (nur wenn sich etwas geändert hat) */
+    async push(force, keepalive) {
+      if (!this.on() || this.busy) return;
+      const lb = this.blob(); if (!force && lb === this.lastBlob) return;
+      this.busy = true;
+      try {
+        const ts = Date.now();
+        const r = await fetch(base() + '/acc/' + this.key + '.json', { method: 'PUT', keepalive: !!keepalive, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ h: this.h, d: lb, ts }) });
+        if (r.ok) { this.lastBlob = lb; this.ts = ts; this.save(); this.msg = ''; } else this.msg = 'Speichern abgelehnt (http ' + r.status + ')';
+      } catch (e) { this.msg = 'Offline'; }
+      this.busy = false;
+    },
+    /** Beim Start: neuerer Stand aus der Cloud? Dann übernehmen und einmal neu laden */
+    async pull() {
+      if (!this.on()) return;
+      try {
+        this.tryKey = this.key; const cur = await this.fetchAcc();
+        if (!cur || cur.h !== this.h) return;
+        const changedLocal = this.blob() !== this.lastBlob;
+        if ((cur.ts || 0) > (this.ts || 0) && !changedLocal) {
+          if (this.apply(cur.d)) { this.lastBlob = this.blob(); this.ts = cur.ts; this.save(); location.reload(); }
+        } else if (changedLocal) this.push(false);
+      } catch (e) { /* offline */ }
+    },
+    start() {
+      if (!this.on()) return;
+      setTimeout(() => this.pull(), 600);
+      setInterval(() => { if (!document.hidden) this.push(false); }, 15000);
+      document.addEventListener('visibilitychange', () => { if (document.hidden) this.push(false, true); });
+      window.addEventListener('pagehide', () => this.push(false, true));
+    },
+
+    // ---------------- Oberfläche ----------------
+    label() { return this.on() ? 'KONTO: ' + this.name : 'KONTO / ANMELDEN'; },
+    dialog() {
+      if (document.getElementById('bgAcc')) return;
+      const ov = document.createElement('div'); ov.id = 'bgAcc';
+      ov.style.cssText = 'position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.6);display:grid;place-items:center;font-family:var(--body,system-ui)';
+      const box = document.createElement('div'); box.style.cssText = 'background:#12201a;border:2px solid #ffc83d;border-radius:14px;padding:16px 18px;width:min(380px,92vw);color:#fff;max-height:90vh;overflow:auto';
+      ov.appendChild(box); document.body.appendChild(ov);
+      const close = () => { ov.remove(); const b = document.getElementById('btnAccount'); if (b) b.textContent = this.label(); };
+      ov.addEventListener('mousedown', (e) => { if (e.target === ov) close(); });
+      const inp = 'width:100%;box-sizing:border-box;padding:9px;border-radius:8px;border:0;font-size:16px;margin:4px 0 8px';
+      const bt = (bg) => 'padding:9px 14px;border-radius:8px;border:0;font-weight:800;color:#fff;cursor:pointer;background:' + bg;
+      const render = (note) => {
+        if (this.on()) {
+          box.innerHTML = '<b style="font-size:17px;color:#ffc83d">KONTO</b><div style="margin:10px 0">Angemeldet als <b>' + String(this.name).replace(/[<>&]/g, '') + '</b>.<br><small style="opacity:.75">Figur, Shop, Sammlung, Rekorde und Endlos-Stand werden automatisch gespeichert und auf jedem Gerät geladen, auf dem du dich anmeldest.</small></div>' +
+            (this.msg ? '<div style="color:#ff9a9a;margin-bottom:8px">' + this.msg + '</div>' : '') + (note ? '<div style="color:#9dffb8;margin-bottom:8px">' + note + '</div>' : '') +
+            '<div style="display:flex;gap:8px;flex-wrap:wrap"><button id="aSave" style="' + bt('#4caf50') + '">JETZT SPEICHERN</button><button id="aOut" style="' + bt('#8a2b2b') + '">ABMELDEN</button><button id="aX" style="' + bt('#333') + '">SCHLIESSEN</button></div>';
+          box.querySelector('#aSave').onclick = async () => { await this.push(true); render(this.msg ? '' : 'Gespeichert.'); };
+          box.querySelector('#aOut').onclick = () => { this.logout(); location.reload(); };
+          box.querySelector('#aX').onclick = close;
+        } else {
+          box.innerHTML = '<b style="font-size:17px;color:#ffc83d">KONTO</b><div style="margin:8px 0 4px;font-size:14px;opacity:.85">Mit einem Konto hast du auf Handy, PC und in jedem Browser denselben Fortschritt. Keine E-Mail nötig.</div>' +
+            '<label style="font-size:12px;opacity:.7">NAME (Buchstaben/Zahlen, mind. 4)</label><input id="aN" autocomplete="username" maxlength="16" style="' + inp + '">' +
+            '<label style="font-size:12px;opacity:.7">PASSWORT (mind. 6)</label><input id="aP" type="password" autocomplete="current-password" style="' + inp + '">' +
+            '<div id="aM" style="min-height:20px;color:#ff9a9a;margin-bottom:6px">' + (note || '') + '</div>' +
+            '<div style="display:flex;gap:8px;flex-wrap:wrap"><button id="aIn" style="' + bt('#4caf50') + '">ANMELDEN</button><button id="aNew" style="' + bt('#2b6cb0') + '">KONTO ERSTELLEN</button><button id="aX" style="' + bt('#333') + '">ABBRECHEN</button></div>' +
+            '<div style="font-size:12px;opacity:.65;margin-top:8px">Neues Konto: dein jetziger Fortschritt auf diesem Gerät wird hochgeladen. Anmelden: der Stand des Kontos ersetzt den Fortschritt auf diesem Gerät. Passwort vergessen = nicht wiederherstellbar.</div>';
+          const n = box.querySelector('#aN'), p = box.querySelector('#aP'), m = box.querySelector('#aM');
+          [n, p].forEach(x => x.addEventListener('keydown', (e) => { e.stopPropagation(); if (e.key === 'Enter') go('login'); }));
+          const go = async (mode) => {
+            m.style.color = '#fff'; m.textContent = 'Einen Moment …'; box.querySelectorAll('button').forEach(b => { b.disabled = true; });
+            const r = await this.enter(mode, n.value, p.value);
+            if (r.ok) { m.style.color = '#9dffb8'; m.textContent = r.msg; setTimeout(() => location.reload(), 700); } else { box.querySelectorAll('button').forEach(b => { b.disabled = false; }); m.style.color = '#ff9a9a'; m.textContent = r.msg; }
+          };
+          box.querySelector('#aIn').onclick = () => go('login'); box.querySelector('#aNew').onclick = () => go('create'); box.querySelector('#aX').onclick = close;
+          setTimeout(() => { try { n.focus(); } catch (e) { /* egal */ } }, 50);
+        }
+      };
+      render();
+    }
+  };
+  A.init();
+  BG.Account = A;
+  document.addEventListener('DOMContentLoaded', () => {
+    const b = document.getElementById('btnAccount'); if (b) { b.textContent = A.label(); b.onclick = () => A.dialog(); }
+    A.start();
+  });
 })(globalThis.BG = globalThis.BG || {});
 
 /* src/tutorial.js */
@@ -12973,8 +13137,8 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
 /* version.js – Versionsnummer. VERSION von Hand erhöhen; BUILD (Datum/Uhrzeit) setzt tools/build.js beim Bauen. */
 (function (BG) {
   'use strict';
-  BG.VERSION = '1.18';
-  BG.BUILD = '11.10. 13:27';
+  BG.VERSION = '1.20';
+  BG.BUILD = '11.10. 13:40';
   BG.versionText = () => 'v' + BG.VERSION + (BG.BUILD.indexOf('__') === 0 ? ' · dev' : ' · ' + BG.BUILD);
 })(globalThis.BG = globalThis.BG || {});
 
@@ -13463,6 +13627,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
             w.appendChild(b);
           });
         });
+        chips('cust.skirt', [{ id: 0, t: I.t('skirt.none') }, { id: 1, t: I.t('skirt.golf') }], L.skirt === 1 ? 1 : 0, (id) => { L.skirt = id; });
         const orig = (labelKey, prop, list) => {                     // Farbreihe mit „Original“ (-1) vorn
           const s = section(labelKey), w = document.createElement('div'); w.className = 'sw'; s.appendChild(w);
           const o = document.createElement('button'); o.type = 'button'; o.textContent = '⟲'; o.title = de ? 'Originalfarbe' : 'Original'; o.style.cssText = 'background:#2a3040;color:#fff;font-size:14px;line-height:1';
@@ -14056,7 +14221,7 @@ body.fsstandalone #fsBtn{display:none!important}`;
 
   function startMatch(o) {
     if (o.golf) { o = Object.assign({}, o, { range: true, map: 'gc' + (o.hole || 1), playersPerTeam: 1 }); }
-    if (BG.Stats && !o.tutorial && !o.again) BG.Stats.play(o.koth ? 'koth' : o.endless ? 'endless' : o.range ? 'range' : o.net ? 'online' : 'match');
+    if (BG.Stats && !o.tutorial && !o.again) BG.Stats.play(o.golf ? (o.mp ? 'golf-online' : 'golf') : o.koth ? (o.net ? 'koth-online' : 'koth') : o.endless ? 'endless' : o.range ? 'range' : o.net ? 'battle-online' : 'battle');
     if (o.again && lastEndless && game.endless) o = lastEndless;                 // Neustart im gleichen Modus
     else if (o.again && lastKoth && game.koth) o = lastKoth;
     lastEndless = o.endless ? Object.assign({}, o, { again: false }) : null;
