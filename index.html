@@ -1253,7 +1253,9 @@
             + '<div style="margin-top:8px;opacity:.7">Modi</div>' + Object.keys(d.modes).map(k => row(esc(k), d.modes[k])).join('')
             + '<div style="margin-top:8px;opacity:.7">Online: ' + (d.onlineNames.map(esc).join(', ') || '–') + '</div>'
             + '<div style="margin-top:8px;opacity:.7">Zuletzt aktiv</div>' + d.recent.map(x => row(esc(x.name), x.plays + ' Spiele · vor ' + (x.ago < 90 ? x.ago + ' s' : Math.round(x.ago / 60) + ' min'))).join('')
-            + '<div style="margin-top:10px;opacity:.8;font-size:13px">Admin-Modus an: in der Bestenliste erscheint bei jedem Eintrag ein ✕ zum Löschen.</div><button id="bgAdOut" style="margin-top:6px;padding:6px 12px;border-radius:8px;border:0;background:#8a2b2b;color:#fff;font-weight:800">ADMIN ABMELDEN</button>';
+            + '<div style="margin-top:10px;opacity:.8;font-size:13px">Admin-Modus an: in der Bestenliste erscheint bei jedem Eintrag ein ✕ zum Löschen.</div>'
+            + '<div style="margin-top:10px;opacity:.7">Testwährung (nur dieses Gerät/Konto)</div><div id="bgAdCur" style="font-size:13px;margin:4px 0"></div><div style="display:flex;gap:6px;flex-wrap:wrap">' + [['tees',100,'+100 Tees'],['tees',1000,'+1000 Tees'],['markers',10,'+10 Marker'],['coupons',1,'+1 Coupon'],['vouchers',5,'+5 Gutscheine']].map(x => '<button data-g="' + x[0] + '" data-n="' + x[1] + '" style="padding:6px 10px;border-radius:8px;border:0;background:#4caf50;color:#fff;font-weight:800">' + x[2] + '</button>').join('') + '</div><button id="bgAdOut" style="margin-top:6px;padding:6px 12px;border-radius:8px;border:0;background:#8a2b2b;color:#fff;font-weight:800">ADMIN ABMELDEN</button>';
+          { B.querySelectorAll('[data-g]').forEach(btn => { btn.onclick = () => { const S = BG.Prefs.data.shop, k = btn.dataset.g, n = +btn.dataset.n, cap = { tees: 99999, markers: 99999, coupons: 99, vouchers: 999 }[k]; S[k] = Math.min(cap, (S[k] || 0) + n); BG.Prefs.save(); const t = B.querySelector('#bgAdCur'); if (t) t.textContent = 'Tees ' + S.tees + ' · Marker ' + S.markers + ' · Coupons ' + S.coupons + ' · Gutscheine ' + S.vouchers; }; }); const t0 = B.querySelector('#bgAdCur'); if (t0) { const S = BG.Prefs.data.shop; t0.textContent = 'Tees ' + S.tees + ' · Marker ' + S.markers + ' · Coupons ' + S.coupons + ' · Gutscheine ' + S.vouchers; } }
           { const o = B.querySelector('#bgAdOut'); if (o) o.onclick = () => { if (BG.Scores && BG.Scores.setAdmin) BG.Scores.setAdmin(false); const x = document.getElementById('bgAdmin'); if (x) x.remove(); clearInterval(tm); }; }
         } catch (e) { B.innerHTML = 'Fehler beim Laden.'; }
       };
@@ -13145,8 +13147,8 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
 /* version.js – Versionsnummer. VERSION von Hand erhöhen; BUILD (Datum/Uhrzeit) setzt tools/build.js beim Bauen. */
 (function (BG) {
   'use strict';
-  BG.VERSION = '1.21';
-  BG.BUILD = '11.10. 14:52';
+  BG.VERSION = '1.22';
+  BG.BUILD = '11.10. 15:11';
   BG.versionText = () => 'v' + BG.VERSION + (BG.BUILD.indexOf('__') === 0 ? ' · dev' : ' · ' + BG.BUILD);
 })(globalThis.BG = globalThis.BG || {});
 
