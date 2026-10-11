@@ -584,7 +584,7 @@
     <button class="btn ghost big" id="btnCollection"><span id="colTitle">SAMMLUNG</span> <small id="colBal"></small></button>
     <div class="btnrow"><button class="btn ghost" id="btnTut" data-i18n="menu.tutorial"></button><button class="btn ghost" id="btnRules" data-i18n="menu.rules"></button><button class="btn ghost" id="btnOptions" data-i18n="menu.options"></button><button class="btn ghost" id="btnAdmin" hidden style="opacity:.7;font-size:.8em">ADMIN</button></div>
     <button class="lnk" id="btnCustom" data-i18n="menu.custom"></button>
-    <button class="btn ghost" id="btnRotate" style="margin-top:6px;font-size:.85em">⟳ QUER SPIELEN</button>
+    <button class="btn ghost" id="btnRotate" style="margin-top:6px;font-size:.85em">🔄 ROTATE</button>
     <div class="mhint" data-i18n="menu.hint"></div>
     <div class="mhint" id="verTag" style="opacity:.55;margin-top:4px"></div>
   </div>
@@ -875,7 +875,7 @@
     const on = D.want && realH() > realW() * 1.05;
     if (on !== D.on) { D.on = on; document.body.classList.toggle('rot', on); styles(); frame(); window.dispatchEvent(new Event('resize')); }
     else if (on) frame();
-    const b = document.getElementById('btnRotate'); if (b) b.textContent = D.want ? '⟳ HOCHKANT SPIELEN' : '⟳ QUER SPIELEN';
+    const b = document.getElementById('btnRotate'); if (b) b.textContent = D.want ? '🔄 ROTATE' : '🔄 ROTATE';
   }
   D.toggle = () => { D.want = !D.want; try { localStorage.setItem('bgRot', D.want ? '1' : '0'); } catch (e) { } apply(); };
   D.apply = apply;
@@ -12907,7 +12907,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       const b = e.ball, L = LESSONS[this.li], p = this.g.human;
       this.flying = false;
       const bx = b.pos.x, bz = b.pos.z, d = Math.hypot(bx - this.tx, bz - this.tz);
-      if (d <= L.r) { this.passed = true; this.fb = 'hit'; this.fbTip = ''; this.render(); return; }
+      if (d <= L.r) { if (this.cb.hole) this.cb.hole(); this.passed = true; this.fb = 'hit'; this.fbTip = ''; this.render(); return; }
       this.misses++;
       const u = U.yawTo(p, { x: this.tx, z: this.tz }), fw = { x: Math.sin(u), z: -Math.cos(u) }, rt = { x: Math.cos(u), z: Math.sin(u) };
       const along = (bx - this.tx) * fw.x + (bz - this.tz) * fw.z, cross = (bx - this.tx) * rt.x + (bz - this.tz) * rt.z, T0 = this.lang();
@@ -12973,8 +12973,8 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
 /* version.js – Versionsnummer. VERSION von Hand erhöhen; BUILD (Datum/Uhrzeit) setzt tools/build.js beim Bauen. */
 (function (BG) {
   'use strict';
-  BG.VERSION = '1.16';
-  BG.BUILD = '11.10. 13:22';
+  BG.VERSION = '1.18';
+  BG.BUILD = '11.10. 13:27';
   BG.versionText = () => 'v' + BG.VERSION + (BG.BUILD.indexOf('__') === 0 ? ' · dev' : ' · ' + BG.BUILD);
 })(globalThis.BG = globalThis.BG || {});
 
@@ -14018,7 +14018,7 @@ body.fsstandalone #fsBtn{display:none!important}`;
       game.netDrop(team, game.net && game.net.skill || 'MEDIUM');
       BG.Menu.toast(BG.I18n.t('mp.dropped') + ' ' + C.teams[team].name);
     };
-    BG.Tutor.cb = { start: (o) => startMatch(o), menu: () => toMenu(), clear: () => { BV.clear(); FX.clear(); BG.BallCam.stop(); }, click: () => Au.click() }; BG.Tutor.init(); if (BG.Stats) BG.Stats.init();
+    BG.Tutor.cb = { start: (o) => startMatch(o), menu: () => toMenu(), clear: () => { BV.clear(); FX.clear(); BG.BallCam.stop(); }, click: () => Au.click(), hole: () => Au.hole(1) }; BG.Tutor.init(); if (BG.Stats) BG.Stats.init();
     refreshResume();
     BG.Menu.init({ onStart: startMatch, onClick: () => { Au.init(); Au.click(); }, onNetHost: (set) => { Au.init(); const pkt = N.hostStart(set); if (pkt) startNet(pkt); } });
     BG.Scores.init();
@@ -14444,7 +14444,7 @@ body.fsstandalone #fsBtn{display:none!important}`;
         case 'golfpenalty': if (BG.GcView) BG.GcView.onPenalty(e, UI, Au); break;
         case 'holeout': if (e.round && e.last && e.scores.filter(v => v != null).length >= 9 && BG.Scores && !BG.Net.golfMode) { const tot = e.scores.reduce((a, b) => a + (b || 0), 0); BG.Scores.submit('golf', Object.assign({ score: tot }, BG.Scores.current())).then((rec) => { if (rec) UI.banner(BG.Prefs.data.lang === 'en' ? 'NEW BEST ROUND' : 'NEUE BESTRUNDE', tot + (BG.Prefs.data.lang === 'en' ? ' strokes' : ' Schläge'), '#ffe28a'); }); }
         case 'holeout': if (BG.GcView) BG.GcView.onHoleout(e, game, { next: (sc) => startMatch({ golf: true, hole: e.hole + 1, scores: sc, round: true, botSkill: lastSkill, swingSkill: lastSkill, ctl: C.ctlMode, timing: C.timingMeter }), again: BG.Net.golfMode ? null : () => startMatch({ golf: true, hole: e.hole, scores: e.scores.slice(0, e.hole - 1), round: e.round, botSkill: lastSkill, swingSkill: lastSkill, ctl: C.ctlMode, timing: C.timingMeter }), menu: toMenu }, Au); break;
-        case 'holein': { FX.burst(e.x, e.y + 0.4, e.z, 0xffffff, 22, 6, 0.9, 10); if (game.range && mine(e.ball.team)) Au.hole(1); break; }
+        case 'holein': { FX.burst(e.x, e.y + 0.4, e.z, 0xffffff, 22, 6, 0.9, 10); if (game.range && !game.tutorial && mine(e.ball.team)) Au.hole(1); break; }
         case 'go': UI.countdown(0, true); Au.go();
           if (game.turnMode && game.koth) { const de = BG.Prefs.data.lang !== 'en'; setTimeout(() => { UI.phaseTip((de ? 'RUNDE 1 / ' : 'ROUND 1 / ') + game.rounds + ' · ' + (de ? 'ZIELEN' : 'AIM'), de ? 'Jetzt bist du dran: 3 Schüsse, dann FERTIG' : 'Your turn: 3 shots, then DONE', '#9dffb8'); }, 700); }
           break;
@@ -14560,7 +14560,7 @@ body.fsstandalone #fsBtn{display:none!important}`;
     FX.ring(e.x, e.y, e.z, t.color, 6);
     if (e.tierIdx >= 3 || names.length) FX.pillar(e.x, e.y, e.z, t.color);
     Au.score(e.tierIdx, mineT);
-    if (e.tier === 'BULLSEYE' && mineT) Au.hole(1);
+    if (e.tier === 'BULLSEYE') Au.hole(mineT ? 1 : 0.45);
     if (names.length) Au.special(mineT);
     if (e.combo >= 2) { FX.popup(e.x, e.y + 3.5, e.z, '<b style="color:#ffc83d;font-size:22px">COMBO x' + e.combo + '</b>', '', 1.6); Au.combo(e.combo); }
     UI.feedLine(e.team, game.teams[e.team].name, ' +' + e.total + ' ' + (names.join(' · ') || e.tier) + (e.combo >= 2 ? ' · x' + e.combo : ''));
