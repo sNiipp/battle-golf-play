@@ -1855,6 +1855,7 @@
     buildPlace: 14,             // Radius um den Techniker, in dem der Spieler den Bauplatz selbst wählen darf
     buildGap: 7,                // Mindestabstand zwischen Gebäuden/Lagern (nichts wird ineinander gebaut)
     structCap: 5,               // höchstens so viele Gebäude (MG, Mörser, FOB) pro Team
+    sizeMax: 4,                 // dauerhafte Squad-Einheiten: durch erneutes Kaufen bis zu so viele Einheiten pro Ball
     stockCap: 3,                // Nachschub je Squad-Typ sammelt sich bis zu dieser Zahl
     supplyCap: 150,
     flatClub: { key: 'FL', name: 'FLACH', speed: 44, loft: 1, power: 60, accuracy: 90, spin: 0.2 },   // Fahrzeuge werden flach „gestartet“
@@ -1947,6 +1948,8 @@
     const t = this.teams[team];
     t.squad = types.filter(x => D.units[x] && D.units[x].cost && D.units[x].kind !== 'struct').slice(0, D.squad);
     while (t.squad.length < D.squad) t.squad.push(D.squadPool[t.squad.length % D.squadPool.length]);
+    t.size = {};
+    t.perm = t.squad.filter(x => x !== D.squadFixed);          // dauerhaft: kommen jede Runde gratis nach; der Support Heli nur in Runde 1
     t.stock = {}; for (const s of t.squad) t.stock[s] = (t.stock[s] || 0) + 1;
     return t.squad;
   };
@@ -1954,7 +1957,8 @@
   K.beginRound = function (round) {
     this.round = round;
     for (const t of this.teams) {
-      for (const s of new Set(t.squad)) { const want = t.squad.filter(x => x === s).length; if ((t.stock[s] || 0) < want) t.stock[s] = want; }
+      const src = round > 1 ? (t.perm || t.squad) : t.squad;
+      for (const s of new Set(src)) { const want = src.filter(x => x === s).length; if ((t.stock[s] || 0) < want) t.stock[s] = want; }
     }
     for (const u of this.units) if (u.alive && u.type === 'fob' && !u.inbound) {
       const t = this.teams[u.team], F = D.units.fob;
@@ -1968,12 +1972,15 @@
     if (!d || !d.cost) return null;
     return d.cost + (d.unlock && !t.unlocked[type] ? d.unlock : 0);
   };
-  K.canBuy = function (team, type) { const p = this.price(team, type); return p != null && this.teams[team].wallet >= p; };
+  K.sizeOf = function (team, type) { const t = this.teams[team]; return (t.size && t.size[type]) || 1; };      // Einheiten pro Ball (dauerhaftes Squad-Mitglied: durch erneutes Kaufen mehr)
+  K.isPerm = function (team, type) { const t = this.teams[team]; return !!(t.perm && t.perm.includes(type)); };      // dauerhaftes Squad-Mitglied: nicht kaufbar
+  K.canBuy = function (team, type) { const p = this.price(team, type); return p != null && !(this.isPerm(team, type) && this.sizeOf(team, type) >= D.sizeMax) && this.teams[team].wallet >= p; };
   /** force: im Netz hat der Absender den Kauf schon geprüft */
   K.buy = function (team, type, force) {
     if (!force && !this.canBuy(team, type)) return false;
     const t = this.teams[team], p = this.price(team, type); if (p == null) return false;
-    t.wallet -= p; t.spent += p; t.unlocked[type] = true; t.stock[type] = (t.stock[type] || 0) + 1;
+    t.wallet -= p; t.spent += p; t.unlocked[type] = true;
+    if (this.isPerm(team, type)) { t.size = t.size || {}; t.size[type] = Math.min(D.sizeMax, this.sizeOf(team, type) + 1); } else t.stock[type] = (t.stock[type] || 0) + 1;
     this.push({ type: 'buy', team, unit: type, price: p });
     return true;
   };
@@ -4867,6 +4874,9 @@
       if (!K.canDeploy(b.team)) { b.kgone = true; this.push({ type: 'kcap', team: b.team, x: b.pos.x, z: b.pos.z }); continue; }
       const u = K.addUnit(b.k, b.team, b.pos.x, b.pos.z, { owner: b.player });
       u.ball = b; b.unit = u; if (b.kord) u.order = b.kord;
+      if (u.kind === 'inf') for (let i = 1, n = K.sizeOf(b.team, b.k); i < n && K.canDeploy(b.team); i++) {       // erneut gekaufte Squad-Einheiten: mehr Truppen pro Ball
+        const an = i * 2.1 + b.team, r = 1.8; K.addUnit(b.k, b.team, b.pos.x + Math.cos(an) * r, b.pos.z + Math.sin(an) * r, { owner: b.player });
+      }
       this.push({ type: 'klanded', unit: u, ball: b, team: b.team });
     }
   };
@@ -11835,8 +11845,8 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       this.g = g; this.sel = ['sniper', 'medic'];
       $('ksq').hidden = false; $('ksqWait').textContent = '';
       $('ksqT').textContent = L('KING OF THE HILL', 'KING OF THE HILL');
-      $('ksqS').innerHTML = L('Du startest immer mit dem <b>Support Heli</b>. Wähle dazu <b>2 weitere Bälle</b>. In Runde 1 spielst du alle drei, danach nur noch <b>1 Ball pro Zug</b>. Alles andere (Sturmtrupp, Logistik Heli, Panzer, Transporter) schaltest du mit Punkten im Shop frei.',
-        'You always start with the <b>Support Heli</b>. Pick <b>2 more balls</b>. In round 1 you play all three, afterwards only <b>1 ball per turn</b>. Everything else (assault, logistics heli, tank, transport) is unlocked with points in the shop.');
+      $('ksqS').innerHTML = L('Wähle <b>2 Bälle</b>, die du dauerhaft behältst (sie kommen jede Runde gratis nach; erneut gekauft werden mehr Truppen pro Ball abgesetzt). Dazu bekommst du in <b>Runde 1</b> einmalig den <b>Support Heli</b>; danach musst du ihn im Shop kaufen. In Runde 1 spielst du alle drei, danach nur noch <b>1 Ball pro Zug</b>. Alles andere (Sturmtrupp, Logistik Heli, Panzer, Transporter) schaltest du mit Punkten im Shop frei.',
+        'Pick <b>2 balls</b> you keep permanently (they come back free every round; buying one again drops more troops per ball). In <b>round 1</b> you also get the <b>Support Heli</b> once; afterwards you have to buy it in the shop. In round 1 you play all three, afterwards only <b>1 ball per turn</b>. Everything else (assault, logistics heli, tank, transport) is unlocked with points in the shop.');
       this.squadRender();
     },
     squadHide() { $('ksq').hidden = true; },
@@ -11891,8 +11901,8 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       $('kpBT').textContent = L('NEUE BÄLLE KAUFEN', 'BUY NEW BALLS');
       let b = '';
       for (const t of D.order) {
-        const d = D.units[t], pr = Kn.price(tm, t), can = Kn.canBuy(tm, t), locked = d.unlock && !S.unlocked[t], c = hexCss(BG.ArtHex ? BG.ArtHex(def(t)) : 0xffffff);
-        b += '<div class="kc' + (can ? '' : ' dis') + '" data-b="' + t + '" style="--c:' + c + '"><img alt="" src="' + icon(t, 48) + '" style="width:48px;height:48px"><div class="nm">' + esc(L(d.de, d.name)) + '</div><div class="st">' + pr + ' ' + L('Punkte', 'pts') + (locked ? ' · ' + L('inkl. Freischaltung', 'incl. unlock') : '') + '</div></div>';
+        const d = D.units[t], pr = Kn.price(tm, t), can = Kn.canBuy(tm, t), perm = Kn.isPerm(tm, t), locked = d.unlock && !S.unlocked[t], c = hexCss(BG.ArtHex ? BG.ArtHex(def(t)) : 0xffffff);
+        b += '<div class="kc' + (can ? '' : ' dis') + '" data-b="' + t + '" style="--c:' + c + '"><img alt="" src="' + icon(t, 48) + '" style="width:48px;height:48px"><div class="nm">' + esc(L(d.de, d.name)) + '</div><div class="st">' + (pr + ' ' + L('Punkte', 'pts') + (perm ? ' · ' + L('+1 Truppe (jetzt ' + Kn.sizeOf(tm, t) + ')', '+1 troop (now ' + Kn.sizeOf(tm, t) + ')') : '')) + (locked ? ' · ' + L('inkl. Freischaltung', 'incl. unlock') : '') + '</div></div>';
       }
       $('kpBuy').innerHTML = b;
       $('kpGrid').querySelectorAll('[data-p]').forEach(c => c.onclick = () => { if (ctl.setBall(c.dataset.p)) { if (this.h.onClick) this.h.onClick(); this.pickShown = false; el.hidden = true; } });
@@ -11984,10 +11994,10 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       $('kShopW').innerHTML = L('Guthaben', 'Balance') + ' <b>' + Math.round(S.wallet) + '</b> ' + L('Punkte', 'points');
       let h = '';
       for (const t of D.order) {
-        const d = D.units[t], pr = Kn.price(tm, t), locked = d.unlock && !S.unlocked[t], can = aim && Kn.canBuy(tm, t), have = S.stock[t] || 0;
+        const d = D.units[t], pr = Kn.price(tm, t), locked = d.unlock && !S.unlocked[t], can = aim && Kn.canBuy(tm, t), perm = Kn.isPerm(tm, t), have = S.stock[t] || 0;
         h += '<div class="ki"><img alt="" src="' + icon(t, 48) + '"><div class="kt"><b>' + esc(L(d.de, d.name)) + '</b>' + (have ? ' <span class="kh">×' + have + '</span>' : '') +
           '<div class="ks">' + esc(stat(t)) + '</div><div class="kn">' + esc(d.info) + '</div></div>' +
-          '<button class="kb" data-b="' + t + '"' + (can ? '' : ' disabled') + '>' + pr + (locked ? '<small>' + L('inkl. Freischaltung', 'incl. unlock') + ' +' + d.unlock + '</small>' : '') + '</button></div>';
+          '<button class="kb" data-b="' + t + '"' + (can ? '' : ' disabled') + '>' + pr + (perm ? '<small>' + L('+1 Truppe (jetzt ' + Kn.sizeOf(tm, t) + ')', '+1 troop (now ' + Kn.sizeOf(tm, t) + ')') + '</small>' : '') + (locked ? '<small>' + L('inkl. Freischaltung', 'incl. unlock') + ' +' + d.unlock + '</small>' : '') + '</button></div>';
       }
       $('kShopList').innerHTML = h;
       $('kShopList').querySelectorAll('[data-b]').forEach(b => b.onclick = () => this.h.onBuy(b.dataset.b));
@@ -13168,8 +13178,8 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
 /* version.js – Versionsnummer. VERSION von Hand erhöhen; BUILD (Datum/Uhrzeit) setzt tools/build.js beim Bauen. */
 (function (BG) {
   'use strict';
-  BG.VERSION = '1.23';
-  BG.BUILD = '11.10. 18:35';
+  BG.VERSION = '1.24';
+  BG.BUILD = '11.10. 19:13';
   BG.versionText = () => 'v' + BG.VERSION + (BG.BUILD.indexOf('__') === 0 ? ' · dev' : ' · ' + BG.BUILD);
 })(globalThis.BG = globalThis.BG || {});
 
