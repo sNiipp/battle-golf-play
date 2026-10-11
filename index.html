@@ -1855,6 +1855,7 @@
     buildPlace: 14,             // Radius um den Techniker, in dem der Spieler den Bauplatz selbst wählen darf
     buildGap: 7,                // Mindestabstand zwischen Gebäuden/Lagern (nichts wird ineinander gebaut)
     structCap: 5,               // höchstens so viele Gebäude (MG, Mörser, FOB) pro Team
+    permBuy: ['assault', 'sniper', 'medic', 'tech'],   // einmal gekauft = dauerhaft im Squad (kommt jede Runde gratis nach)
     sizeMax: 4,                 // dauerhafte Squad-Einheiten: durch erneutes Kaufen bis zu so viele Einheiten pro Ball
     stockCap: 3,                // Nachschub je Squad-Typ sammelt sich bis zu dieser Zahl
     supplyCap: 150,
@@ -1875,7 +1876,8 @@
         info: 'Trifft auf weite Distanz (66 m) sehr genau, ein Ziel pro Runde. Bevorzugt Sanitäter und Techniker.' },
       medic: { name: 'Sanitäter', de: 'Sanitäter', kind: 'inf', hp: 60, cost: 8, kill: 2,
         heal: 20, healTargets: 3, radius: 18,
-        info: 'Heilt pro Runde bis zu 3 Verbündete um 20 HP (18 m). Keine Waffe.' },
+        w: { dmg: 14, radius: 20, min: 0, bands: [[20, 1]], vs: { veh: 0.15, struct: 0.15 } },
+        info: 'Heilt pro Runde bis zu 3 Verbündete um 20 HP (18 m) und schießt zusätzlich schwach (14 Schaden, 20 m).' },
       tech: { name: 'Techniker', de: 'Techniker', kind: 'inf', hp: 70, cost: 10, kill: 3,
         w: { dmg: 26, radius: 12, min: 0, bands: [[12, 1]], vs: { veh: 2.5, struct: 2 } }, repair: 32, radius: 12,
         info: 'SMG: nur auf kurze Distanz (12 m), zerstört Fahrzeuge gut. Repariert Fahrzeuge/Gebäude und baut Gebäude mit Nachschub.' },
@@ -1980,7 +1982,8 @@
     if (!force && !this.canBuy(team, type)) return false;
     const t = this.teams[team], p = this.price(team, type); if (p == null) return false;
     t.wallet -= p; t.spent += p; t.unlocked[type] = true;
-    if (this.isPerm(team, type)) { t.size = t.size || {}; t.size[type] = Math.min(D.sizeMax, this.sizeOf(team, type) + 1); } else t.stock[type] = (t.stock[type] || 0) + 1;
+    if (!this.isPerm(team, type) && D.permBuy.includes(type)) { t.perm = t.perm || []; t.perm.push(type); t.stock[type] = (t.stock[type] || 0) + 1; }      // neu gekauft: ab jetzt dauerhaft
+    else if (this.isPerm(team, type)) { t.size = t.size || {}; t.size[type] = Math.min(D.sizeMax, this.sizeOf(team, type) + 1); } else t.stock[type] = (t.stock[type] || 0) + 1;
     this.push({ type: 'buy', team, unit: type, price: p });
     return true;
   };
@@ -11441,7 +11444,8 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
     updateLoadout(g, ctl) {
       const p = ctl.p; if (!p) return;
       const st = ctl.stacks();
-      const sig = st.map(s => s.type + s.count).join('|') + '#' + ctl.ballType;
+      const sz = (t) => (g.koth && BG.KOTH && BG.KOTH.typeOf(t)) ? g.koth.sizeOf(p.team, BG.KOTH.typeOf(t)) : 1;      // KoTH: erneut gekaufte Squad-Einheiten = mehr Truppen pro Ball
+      const sig = st.map(s => s.type + s.count + 'x' + sz(s.type)).join('|') + '#' + ctl.ballType;
       if (sig === this._loadSig) return;
       this._loadSig = sig;
       this.ballChips.innerHTML = '';
@@ -11450,7 +11454,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
         b.className = 'chip' + (s.type === ctl.ballType ? ' on' : '');
         b.style.setProperty('--c', '#' + ('000000' + BG.ArtHex(d).toString(16)).slice(-6));
         b.title = d.name + ' – ' + d.desc;
-        b.innerHTML = '<img alt="" src="' + BG.BallArt.icon(d, 44) + '"><span>' + d.name.replace(' Ball', '').toUpperCase() + '</span><b>' + (s.count > 99999 ? '∞' : s.count) + '</b>';
+        b.innerHTML = '<img alt="" src="' + BG.BallArt.icon(d, 44) + '"><span>' + d.name.replace(' Ball', '').toUpperCase() + '</span><b>' + (s.count > 99999 ? '∞' : s.count * sz(s.type)) + '</b>';
         b.addEventListener('click', () => this.showBallInfo(ctl));
         this.ballChips.appendChild(b);
       });
@@ -11469,7 +11473,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
         const d = BT.get(s.type), col = '#' + ('000000' + BG.ArtHex(d).toString(16)).slice(-6);
         const st = (d.stats || []).map(a => '<span style="opacity:.8">' + esc(a[0]) + ': <b>' + esc(a[1]) + '</b></span>').join(' · ');
         h += '<div data-t="' + esc(s.type) + '" style="display:flex;gap:10px;align-items:center;padding:8px;margin-top:4px;border-radius:8px;cursor:pointer;border:1px solid ' + (s.type === ctl.ballType ? col : 'transparent') + ';background:rgba(255,255,255,.05)">' +
-          '<img alt="" width="40" height="40" src="' + BG.BallArt.icon(d, 44) + '"><div style="flex:1"><div style="font-weight:700;color:' + col + '">' + esc(d.name) + ' <span style="color:#fff;opacity:.8">×' + s.count + '</span></div>' +
+          '<img alt="" width="40" height="40" src="' + BG.BallArt.icon(d, 44) + '"><div style="flex:1"><div style="font-weight:700;color:' + col + '">' + esc(d.name) + ' <span style="color:#fff;opacity:.8">×' + s.count * sz(s.type) + '</span></div>' +
           '<div>' + (d.parts && d.parts.length > 1 ? d.parts.map(id => { const q = BT.get(id); return '<div><b>' + esc(q.name.replace(' Ball', '')) + ':</b> ' + esc(q.desc || '') + '</div>'; }).join('') : esc(d.desc || '')) + '</div><div style="font-size:12px;margin-top:2px">' + st + '</div></div></div>';
       });
       ov.innerHTML = h;
@@ -11845,8 +11849,8 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       this.g = g; this.sel = ['sniper', 'medic'];
       $('ksq').hidden = false; $('ksqWait').textContent = '';
       $('ksqT').textContent = L('KING OF THE HILL', 'KING OF THE HILL');
-      $('ksqS').innerHTML = L('Wähle <b>2 Bälle</b>, die du dauerhaft behältst (sie kommen jede Runde gratis nach; erneut gekauft werden mehr Truppen pro Ball abgesetzt). Dazu bekommst du in <b>Runde 1</b> einmalig den <b>Support Heli</b>; danach musst du ihn im Shop kaufen. In Runde 1 spielst du alle drei, danach nur noch <b>1 Ball pro Zug</b>. Alles andere (Sturmtrupp, Logistik Heli, Panzer, Transporter) schaltest du mit Punkten im Shop frei.',
-        'Pick <b>2 balls</b> you keep permanently (they come back free every round; buying one again drops more troops per ball). In <b>round 1</b> you also get the <b>Support Heli</b> once; afterwards you have to buy it in the shop. In round 1 you play all three, afterwards only <b>1 ball per turn</b>. Everything else (assault, logistics heli, tank, transport) is unlocked with points in the shop.');
+      $('ksqS').innerHTML = L('Wähle <b>2 Bälle</b>, die du dauerhaft behältst (sie kommen jede Runde gratis nach; erneut gekauft werden mehr Truppen pro Ball abgesetzt). Sturmtrupp, Scharfschütze, Sanitäter und Techniker bleiben <b>für immer</b> bei dir, sobald du sie im Shop kaufst. Dazu bekommst du in <b>Runde 1</b> einmalig den <b>Support Heli</b>; danach musst du ihn im Shop kaufen. In Runde 1 spielst du alle drei, danach nur noch <b>1 Ball pro Zug</b>. Alles andere (Sturmtrupp, Logistik Heli, Panzer, Transporter) schaltest du mit Punkten im Shop frei.',
+        'Pick <b>2 balls</b> you keep permanently (they come back free every round; buying one again drops more troops per ball). Assault, sniper, medic and technician stay with you <b>for good</b> once bought in the shop. In <b>round 1</b> you also get the <b>Support Heli</b> once; afterwards you have to buy it in the shop. In round 1 you play all three, afterwards only <b>1 ball per turn</b>. Everything else (assault, logistics heli, tank, transport) is unlocked with points in the shop.');
       this.squadRender();
     },
     squadHide() { $('ksq').hidden = true; },
@@ -11902,7 +11906,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       let b = '';
       for (const t of D.order) {
         const d = D.units[t], pr = Kn.price(tm, t), can = Kn.canBuy(tm, t), perm = Kn.isPerm(tm, t), locked = d.unlock && !S.unlocked[t], c = hexCss(BG.ArtHex ? BG.ArtHex(def(t)) : 0xffffff);
-        b += '<div class="kc' + (can ? '' : ' dis') + '" data-b="' + t + '" style="--c:' + c + '"><img alt="" src="' + icon(t, 48) + '" style="width:48px;height:48px"><div class="nm">' + esc(L(d.de, d.name)) + '</div><div class="st">' + (pr + ' ' + L('Punkte', 'pts') + (perm ? ' · ' + L('+1 Truppe (jetzt ' + Kn.sizeOf(tm, t) + ')', '+1 troop (now ' + Kn.sizeOf(tm, t) + ')') : '')) + (locked ? ' · ' + L('inkl. Freischaltung', 'incl. unlock') : '') + '</div></div>';
+        b += '<div class="kc' + (can ? '' : ' dis') + '" data-b="' + t + '" style="--c:' + c + '"><img alt="" src="' + icon(t, 48) + '" style="width:48px;height:48px"><div class="nm">' + esc(L(d.de, d.name)) + '</div><div class="st">' + (pr + ' ' + L('Punkte', 'pts') + (!perm && D.permBuy.includes(t) ? ' · ' + L('dauerhaft', 'permanent') : '') + (perm ? ' · ' + L('+1 Truppe (jetzt ' + Kn.sizeOf(tm, t) + ')', '+1 troop (now ' + Kn.sizeOf(tm, t) + ')') : '')) + (locked ? ' · ' + L('inkl. Freischaltung', 'incl. unlock') : '') + '</div></div>';
       }
       $('kpBuy').innerHTML = b;
       $('kpGrid').querySelectorAll('[data-p]').forEach(c => c.onclick = () => { if (ctl.setBall(c.dataset.p)) { if (this.h.onClick) this.h.onClick(); this.pickShown = false; el.hidden = true; } });
@@ -11997,7 +12001,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
         const d = D.units[t], pr = Kn.price(tm, t), locked = d.unlock && !S.unlocked[t], can = aim && Kn.canBuy(tm, t), perm = Kn.isPerm(tm, t), have = S.stock[t] || 0;
         h += '<div class="ki"><img alt="" src="' + icon(t, 48) + '"><div class="kt"><b>' + esc(L(d.de, d.name)) + '</b>' + (have ? ' <span class="kh">×' + have + '</span>' : '') +
           '<div class="ks">' + esc(stat(t)) + '</div><div class="kn">' + esc(d.info) + '</div></div>' +
-          '<button class="kb" data-b="' + t + '"' + (can ? '' : ' disabled') + '>' + pr + (perm ? '<small>' + L('+1 Truppe (jetzt ' + Kn.sizeOf(tm, t) + ')', '+1 troop (now ' + Kn.sizeOf(tm, t) + ')') + '</small>' : '') + (locked ? '<small>' + L('inkl. Freischaltung', 'incl. unlock') + ' +' + d.unlock + '</small>' : '') + '</button></div>';
+          '<button class="kb" data-b="' + t + '"' + (can ? '' : ' disabled') + '>' + pr + (!perm && D.permBuy.includes(t) ? '<small>' + L('dauerhaft', 'permanent') + '</small>' : '') + (perm ? '<small>' + L('+1 Truppe (jetzt ' + Kn.sizeOf(tm, t) + ')', '+1 troop (now ' + Kn.sizeOf(tm, t) + ')') + '</small>' : '') + (locked ? '<small>' + L('inkl. Freischaltung', 'incl. unlock') + ' +' + d.unlock + '</small>' : '') + '</button></div>';
       }
       $('kShopList').innerHTML = h;
       $('kShopList').querySelectorAll('[data-b]').forEach(b => b.onclick = () => this.h.onBuy(b.dataset.b));
@@ -13178,8 +13182,8 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
 /* version.js – Versionsnummer. VERSION von Hand erhöhen; BUILD (Datum/Uhrzeit) setzt tools/build.js beim Bauen. */
 (function (BG) {
   'use strict';
-  BG.VERSION = '1.24';
-  BG.BUILD = '11.10. 19:13';
+  BG.VERSION = '1.27';
+  BG.BUILD = '11.10. 19:40';
   BG.versionText = () => 'v' + BG.VERSION + (BG.BUILD.indexOf('__') === 0 ? ' · dev' : ' · ' + BG.BUILD);
 })(globalThis.BG = globalThis.BG || {});
 
