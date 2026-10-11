@@ -1133,7 +1133,7 @@
         }
       } catch (e) { /* kein Speicher – Standardwerte */ }
     },
-    save() { try { localStorage.setItem(KEY, JSON.stringify(this.data)); } catch (e) { /* ignorieren */ } },
+    save() { try { localStorage.setItem(KEY, JSON.stringify(this.data)); } catch (e) { /* ignorieren */ } if (BG.Account && BG.Account.soon) BG.Account.soon(); },
     get look() { return this.data.look; }
   };
 
@@ -12697,8 +12697,11 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
         } else if (changedLocal) this.push(false);
       } catch (e) { /* offline */ }
     },
+    /** Nach einer Änderung (Kauf, Sieg …) nach 2 s hochladen */
+    soon() { if (!this.on() || !this.live) return; clearTimeout(this.tm); this.tm = setTimeout(() => this.push(false), 2000); },
     start() {
       if (!this.on()) return;
+      setTimeout(() => { this.live = true; }, 1500);
       setTimeout(() => this.pull(), 600);
       setInterval(() => { if (!document.hidden) this.push(false); }, 15000);
       document.addEventListener('visibilitychange', () => { if (document.hidden) this.push(false, true); });
@@ -12707,13 +12710,18 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
 
     // ---------------- Oberfläche ----------------
     label() { return this.on() ? 'KONTO: ' + this.name : 'KONTO / ANMELDEN'; },
-    dialog() {
+    promptStart() {
+      let no = false; try { no = localStorage.getItem('bgNoAcc') === '1'; } catch (e) { /* egal */ }
+      if (this.on() || no) return;
+      this.dialog(true);
+    },
+    dialog(start) {
       if (document.getElementById('bgAcc')) return;
       const ov = document.createElement('div'); ov.id = 'bgAcc';
       ov.style.cssText = 'position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.6);display:grid;place-items:center;font-family:var(--body,system-ui)';
       const box = document.createElement('div'); box.style.cssText = 'background:#12201a;border:2px solid #ffc83d;border-radius:14px;padding:16px 18px;width:min(380px,92vw);color:#fff;max-height:90vh;overflow:auto';
       ov.appendChild(box); document.body.appendChild(ov);
-      const close = () => { ov.remove(); const b = document.getElementById('btnAccount'); if (b) b.textContent = this.label(); };
+      const close = () => { if (start && !this.on()) { try { localStorage.setItem('bgNoAcc', '1'); } catch (e) { /* egal */ } } ov.remove(); const b = document.getElementById('btnAccount'); if (b) b.textContent = this.label(); };
       ov.addEventListener('mousedown', (e) => { if (e.target === ov) close(); });
       const inp = 'width:100%;box-sizing:border-box;padding:9px;border-radius:8px;border:0;font-size:16px;margin:4px 0 8px';
       const bt = (bg) => 'padding:9px 14px;border-radius:8px;border:0;font-weight:800;color:#fff;cursor:pointer;background:' + bg;
@@ -12730,7 +12738,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
             '<label style="font-size:12px;opacity:.7">NAME (Buchstaben/Zahlen, mind. 4)</label><input id="aN" autocomplete="username" maxlength="16" style="' + inp + '">' +
             '<label style="font-size:12px;opacity:.7">PASSWORT (mind. 6)</label><input id="aP" type="password" autocomplete="current-password" style="' + inp + '">' +
             '<div id="aM" style="min-height:20px;color:#ff9a9a;margin-bottom:6px">' + (note || '') + '</div>' +
-            '<div style="display:flex;gap:8px;flex-wrap:wrap"><button id="aIn" style="' + bt('#4caf50') + '">ANMELDEN</button><button id="aNew" style="' + bt('#2b6cb0') + '">KONTO ERSTELLEN</button><button id="aX" style="' + bt('#333') + '">ABBRECHEN</button></div>' +
+            '<div style="display:flex;gap:8px;flex-wrap:wrap"><button id="aIn" style="' + bt('#4caf50') + '">ANMELDEN</button><button id="aNew" style="' + bt('#2b6cb0') + '">KONTO ERSTELLEN</button><button id="aX" style="' + bt('#333') + '">' + (start ? 'OHNE KONTO SPIELEN' : 'ABBRECHEN') + '</button></div>' +
             '<div style="font-size:12px;opacity:.65;margin-top:8px">Neues Konto: dein jetziger Fortschritt auf diesem Gerät wird hochgeladen. Anmelden: der Stand des Kontos ersetzt den Fortschritt auf diesem Gerät. Passwort vergessen = nicht wiederherstellbar.</div>';
           const n = box.querySelector('#aN'), p = box.querySelector('#aP'), m = box.querySelector('#aM');
           [n, p].forEach(x => x.addEventListener('keydown', (e) => { e.stopPropagation(); if (e.key === 'Enter') go('login'); }));
@@ -12749,7 +12757,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
   A.init();
   BG.Account = A;
   document.addEventListener('DOMContentLoaded', () => {
-    const b = document.getElementById('btnAccount'); if (b) { b.textContent = A.label(); b.onclick = () => A.dialog(); }
+    const b = document.getElementById('btnAccount'); if (b) { b.textContent = A.label(); b.onclick = () => A.dialog(false); }
     A.start();
   });
 })(globalThis.BG = globalThis.BG || {});
@@ -13137,8 +13145,8 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
 /* version.js – Versionsnummer. VERSION von Hand erhöhen; BUILD (Datum/Uhrzeit) setzt tools/build.js beim Bauen. */
 (function (BG) {
   'use strict';
-  BG.VERSION = '1.20';
-  BG.BUILD = '11.10. 13:40';
+  BG.VERSION = '1.21';
+  BG.BUILD = '11.10. 14:52';
   BG.versionText = () => 'v' + BG.VERSION + (BG.BUILD.indexOf('__') === 0 ? ' · dev' : ' · ' + BG.BUILD);
 })(globalThis.BG = globalThis.BG || {});
 
@@ -14189,7 +14197,7 @@ body.fsstandalone #fsBtn{display:none!important}`;
     BG.Scores.init();
     UI.screen('menu');
     requestAnimationFrame(loop);
-    setTimeout(() => { const b = document.getElementById('boot'); if (b) b.remove(); }, 60);
+    setTimeout(() => { const b = document.getElementById('boot'); if (b) b.remove(); if (BG.Account) BG.Account.promptStart(); }, 60);
   }
 
   // ---------- Match-Steuerung ----------
