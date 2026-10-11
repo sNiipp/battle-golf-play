@@ -1215,12 +1215,23 @@
     if (!live || !id) return;
     const now = Date.now();
     if (ev === 'play') { const m = clean(mode, 14) || 'match'; me.plays++; me.modes[m] = (me.modes[m] || 0) + 1; me.lastPlay = now; try { localStorage.setItem('bgDevStat', JSON.stringify(me)); } catch (e) { /* egal */ } }
-    const rec = { first: me.first, last: now, plays: me.plays, modes: me.modes, name: clean(name(), 20) || '?', variant: clean(BG.VARIANT || '', 12) };
+    const A = BG.Account, sh = (BG.Prefs && BG.Prefs.data.shop) || {}; let no = false; try { no = localStorage.getItem('bgNoAcc') === '1'; } catch (e) { /* egal */ }
+    const rec = { first: me.first, last: now, plays: me.plays, modes: me.modes, name: clean(name(), 20) || '?', variant: clean(BG.VARIANT || '', 12),
+      ver: clean(BG.VERSION || '', 8), plat: (matchMedia && matchMedia('(pointer:coarse)').matches) ? 'phone' : 'pc',
+      acct: (A && A.on()) ? clean(A.key, 16) : '', noAcc: !!(no && !(A && A.on())),
+      tees: sh.tees | 0, markers: sh.markers | 0, eT: me.eT | 0, eM: me.eM | 0, sT: me.sT | 0, sM: me.sM | 0,
+      errs: me.errs || {}, lastErr: me.lastErr || '' };
     try { fetch(DB + '/dev-' + id + '.json', { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify(rec), keepalive: true }).catch(() => {}); } catch (e) { /* egal */ }
   }
   const S = BG.Stats = {
     live,
     ping() { send('ping'); },
+    econ(eT, eM, sT, sM) { me.eT = (me.eT | 0) + (eT | 0); me.eM = (me.eM | 0) + (eM | 0); me.sT = (me.sT | 0) + (sT | 0); me.sM = (me.sM | 0) + (sM | 0); try { localStorage.setItem('bgDevStat', JSON.stringify(me)); } catch (e) { /* egal */ } },
+    err(msg) {
+      const v = clean(BG.VERSION || '?', 8) || '?'; me.errs = me.errs || {}; me.errs[v] = Math.min(9999, (me.errs[v] || 0) + 1); me.lastErr = clean(msg, 90);
+      try { localStorage.setItem('bgDevStat', JSON.stringify(me)); } catch (e) { /* egal */ }
+      clearTimeout(S._et); S._et = setTimeout(() => send('ping'), 3000);
+    },
     play(mode) { send('play', mode); },
     init() { const ab = document.getElementById('btnAdmin'); if (ab && live) { ab.hidden = false; ab.onclick = () => S.admin(); } send('ping'); setInterval(() => { if (!document.hidden) send('ping'); }, 30000); },
     isAdminName(n) { return String(n || '').trim().toLowerCase() === 'snip'; },
@@ -1238,10 +1249,15 @@
           const r = await fetch(DB + '.json', { cache: 'no-store' });
           if (!r.ok) { B.innerHTML = 'Keine Statistik erreichbar (Datenbank-Regeln für "stats" prüfen).'; return; }
           const all = (await r.json()) || {}, now = Date.now(), day0 = new Date(); day0.setHours(0, 0, 0, 0);
+          const g = { acc: {}, noAcc: 0, phone: 0, pc: 0, tees: 0, markers: 0, eT: 0, eM: 0, sT: 0, sM: 0, errs: {}, devErr: {}, last: [] };
           const d = { devices: 0, online: 0, activeToday: 0, newToday: 0, plays: 0, modes: {}, onlineNames: [], recent: [] };
           const devs = Object.keys(all).filter(k => k.indexOf('dev-') === 0 && all[k] && all[k].last).map(k => all[k]);
           for (const x of devs) {
             d.devices++; d.plays += x.plays || 0;
+            if (x.acct) g.acc[x.acct] = 1; if (x.noAcc) g.noAcc++; if (x.plat === 'phone') g.phone++; else if (x.plat === 'pc') g.pc++;
+            g.tees += x.tees || 0; g.markers += x.markers || 0; g.eT += x.eT || 0; g.eM += x.eM || 0; g.sT += x.sT || 0; g.sM += x.sM || 0;
+            for (const v in x.errs || {}) { g.errs[v] = (g.errs[v] || 0) + x.errs[v]; g.devErr[v] = (g.devErr[v] || 0) + 1; }
+            if (x.lastErr) g.last.push({ t: x.last, v: x.ver || '?', m: x.lastErr, n: x.name });
             if (now - x.last < 75000) { d.online++; d.onlineNames.push(x.name); }
             if (x.last >= day0.getTime()) d.activeToday++;
             if (x.first >= day0.getTime()) d.newToday++;
@@ -1250,6 +1266,9 @@
           d.recent = devs.sort((a, b) => b.last - a.last).slice(0, 15).map(x => ({ name: x.name, plays: x.plays || 0, ago: Math.round((now - x.last) / 1000) }));
           const row = (a, b) => '<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #ffffff22"><span>' + a + '</span><b>' + b + '</b></div>';
           B.innerHTML = row('Gerade online', d.online) + row('Verschiedene Geräte gesamt', d.devices) + row('Heute aktiv', d.activeToday) + row('Heute neu', d.newToday) + row('Gespielte Spiele gesamt', d.plays)
+            + '<div style="margin-top:8px;opacity:.7">Konten &amp; Geräte</div>' + row('Konten (verschieden)', Object.keys(g.acc).length) + row('Dialog „ohne Konto“ gewählt', g.noAcc) + row('Handy / PC', g.phone + ' / ' + g.pc)
+            + '<div style="margin-top:8px;opacity:.7">Währung (Summe aller Geräte)</div>' + row('Im Umlauf: Tees / Marker', g.tees + ' / ' + g.markers) + row('Verdient: Tees / Marker', g.eT + ' / ' + g.eM) + row('Ausgegeben: Tees / Marker', g.sT + ' / ' + g.sM)
+            + '<div style="margin-top:8px;opacity:.7">Fehler pro Version</div>' + (Object.keys(g.errs).sort().reverse().map(v => row('v' + esc(v), g.errs[v] + ' (' + g.devErr[v] + ' Geräte)')).join('') || row('keine', 0)) + g.last.sort((a, b) => b.t - a.t).slice(0, 4).map(x => '<div style="font-size:11px;opacity:.75;word-break:break-all">v' + esc(x.v) + ' ' + esc(x.n) + ': ' + esc(x.m) + '</div>').join('')
             + '<div style="margin-top:8px;opacity:.7">Modi</div>' + Object.keys(d.modes).map(k => row(esc(k), d.modes[k])).join('')
             + '<div style="margin-top:8px;opacity:.7">Online: ' + (d.onlineNames.map(esc).join(', ') || '–') + '</div>'
             + '<div style="margin-top:8px;opacity:.7">Zuletzt aktiv</div>' + d.recent.map(x => row(esc(x.name), x.plays + ' Spiele · vor ' + (x.ago < 90 ? x.ago + ' s' : Math.round(x.ago / 60) + ' min'))).join('')
@@ -1268,6 +1287,8 @@
       ask();
     }
   };
+  window.addEventListener('error', (e) => { try { S.err((e.message || 'error') + ' @' + String(e.filename || '').split('/').pop() + ':' + (e.lineno || 0)); } catch (x) { /* egal */ } });
+  window.addEventListener('unhandledrejection', (e) => { try { S.err('promise: ' + ((e.reason && e.reason.message) || e.reason || '?')); } catch (x) { /* egal */ } });
 })();
 
 /* src/shop.js */
@@ -1348,9 +1369,9 @@
     equippedId() { const id = S().club; return this.owned(id) ? id : 'classic'; },
     equipped() { return skinOf(this.equippedId()); },
     /** Währung gutschreiben (aus Solo Endlos) */
-    earn(tees, markers) { const s = S(); s.tees = Math.min(99999, s.tees + Math.max(0, tees | 0)); s.markers = Math.min(99999, s.markers + Math.max(0, markers | 0)); save(); },
+    earn(tees, markers) { const s = S(); s.tees = Math.min(99999, s.tees + Math.max(0, tees | 0)); s.markers = Math.min(99999, s.markers + Math.max(0, markers | 0)); if (BG.Stats && BG.Stats.econ) BG.Stats.econ(Math.max(0, tees | 0), Math.max(0, markers | 0), 0, 0); save(); },
     canAfford(price) { const s = S(); return (s.tees >= (price.tees || 0)) && (s.markers >= (price.markers || 0)); },
-    pay(price) { const s = S(); s.tees -= price.tees || 0; s.markers -= price.markers || 0; },
+    pay(price) { const s = S(); s.tees -= price.tees || 0; s.markers -= price.markers || 0; if (BG.Stats && BG.Stats.econ) BG.Stats.econ(0, 0, price.tees || 0, price.markers || 0); },
     buy(id) {
       const sk = SKINS.find(x => x.id === id), s = S();
       if (!sk) return { ok: false, why: 'unknown' };
@@ -12723,7 +12744,7 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
       ov.style.cssText = 'position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.6);display:grid;place-items:center;font-family:var(--body,system-ui)';
       const box = document.createElement('div'); box.style.cssText = 'background:#12201a;border:2px solid #ffc83d;border-radius:14px;padding:16px 18px;width:min(380px,92vw);color:#fff;max-height:90vh;overflow:auto';
       ov.appendChild(box); document.body.appendChild(ov);
-      const close = () => { if (start && !this.on()) { try { localStorage.setItem('bgNoAcc', '1'); } catch (e) { /* egal */ } } ov.remove(); const b = document.getElementById('btnAccount'); if (b) b.textContent = this.label(); };
+      const close = () => { if (start && !this.on()) { try { localStorage.setItem('bgNoAcc', '1'); } catch (e) { /* egal */ } } ov.remove(); if (start && BG.Stats && BG.Stats.ping) BG.Stats.ping(); const b = document.getElementById('btnAccount'); if (b) b.textContent = this.label(); };
       ov.addEventListener('mousedown', (e) => { if (e.target === ov) close(); });
       const inp = 'width:100%;box-sizing:border-box;padding:9px;border-radius:8px;border:0;font-size:16px;margin:4px 0 8px';
       const bt = (bg) => 'padding:9px 14px;border-radius:8px;border:0;font-weight:800;color:#fff;cursor:pointer;background:' + bg;
@@ -13147,8 +13168,8 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
 /* version.js – Versionsnummer. VERSION von Hand erhöhen; BUILD (Datum/Uhrzeit) setzt tools/build.js beim Bauen. */
 (function (BG) {
   'use strict';
-  BG.VERSION = '1.22';
-  BG.BUILD = '11.10. 15:11';
+  BG.VERSION = '1.23';
+  BG.BUILD = '11.10. 18:35';
   BG.versionText = () => 'v' + BG.VERSION + (BG.BUILD.indexOf('__') === 0 ? ' · dev' : ' · ' + BG.BUILD);
 })(globalThis.BG = globalThis.BG || {});
 
