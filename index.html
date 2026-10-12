@@ -1210,7 +1210,7 @@
   const live = typeof location !== 'undefined' && /^https?:$/.test(location.protocol) && !/claude\.ai|claudeusercontent|localhost|127\.0\.0\.1/.test(location.hostname);
   const name = () => { try { return BG.Prefs.data.name || ''; } catch (e) { return ''; } };
   const DB = 'https://battlegolf-24048-default-rtdb.europe-west1.firebasedatabase.app/stats';
-  const ADMIN_HASH = '52605a3092e1a743f0539d1493a2e56f72cf17543324d3785cf79251d7b9bf8f';
+  const ADMIN_HASH = '0fd7ecef4bb5daddde8b76641f788683bff700d20f202524ff524881e762eeaa';
   const sha = async (t) => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t))), b => b.toString(16).padStart(2, '0')).join('');
   const clean = (s, n) => String(s == null ? '' : s).replace(/[^\p{L}\p{N} _.\-]/gu, '').slice(0, n);
   // Jedes Gerät schreibt nur seinen eigenen Eintrag (komplett, kein Lesen nötig); first/plays/modes liegen lokal.
@@ -13612,8 +13612,8 @@ SWAP: ['SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAA
 /* version.js – Versionsnummer. VERSION von Hand erhöhen; BUILD (Datum/Uhrzeit) setzt tools/build.js beim Bauen. */
 (function (BG) {
   'use strict';
-  BG.VERSION = '1.63';
-  BG.BUILD = '12.10. 15:45';
+  BG.VERSION = '1.64';
+  BG.BUILD = '12.10. 16:02';
   BG.versionText = () => 'v' + BG.VERSION + (BG.BUILD.indexOf('__') === 0 ? ' · dev' : ' · ' + BG.BUILD);
 })(globalThis.BG = globalThis.BG || {});
 
